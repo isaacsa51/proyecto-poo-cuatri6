@@ -1,6 +1,16 @@
 package com.multivideo.proyecto;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 public class VentanaLogin extends javax.swing.JFrame {
+
+    //Instanciar objeto ConexionBD
+    ConexionBD bdcon = new ConexionBD();
 
     //Crea la ventana con todos sus componentes
     public VentanaLogin() {
@@ -37,6 +47,11 @@ public class VentanaLogin extends javax.swing.JFrame {
 
         btnLogin.setText("Iniciar Sesión");
         btnLogin.setActionCommand("jButton");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
 
         btnExit.setText("Salir");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
@@ -97,10 +112,36 @@ public class VentanaLogin extends javax.swing.JFrame {
     private void txfdUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfdUsuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txfdUsuarioActionPerformed
+
+    //Iniciar sesión al dar click al botón
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {
+        Connection connection;
+        PreparedStatement ps;
+        
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/multivideo?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+
+            ps = connection.prepareStatement("SELECT * FROM usuarios WHERE usuario=? AND password=?");
+
+            ps.setString(1, txfdUsuario.getText());
+            ps.setString(2, String.valueOf(pfldContrasena.getPassword()));
+            ResultSet result = ps.executeQuery();
+
+            if(result.next()){
+                JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
+            }else{
+                JOptionPane.showMessageDialog(null, "Usuario y/o contraseña incorrecto(s)", "Alerta", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
     //*****No modificar el método initComponents*****//
     
     //Al dar click salir de la aplicación
-    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {                                        
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {        
+        bdcon.desconectarBD();                                
         System.exit(0);
     }
 

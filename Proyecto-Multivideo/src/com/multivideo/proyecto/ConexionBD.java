@@ -34,7 +34,7 @@ public class ConexionBD {
             }
             
         }catch(ClassNotFoundException | SQLException errorBD){
-            System.out.print("Error al intentar conectarse a la base de datos" + errorBD);
+            System.out.print("Error al intentar conectarse a la base de datos\n\n" + errorBD);
         }
     }
 
