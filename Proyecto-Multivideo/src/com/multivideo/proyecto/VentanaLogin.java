@@ -17,7 +17,7 @@ public class VentanaLogin extends javax.swing.JFrame {
         initComponents();
     }
 
-    //*****No modificar el método initComponents*****//
+    /*      No modificar el método initComponents     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -108,6 +108,7 @@ public class VentanaLogin extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    /*      No modificar el método initComponents     */
 
     private void txfdUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfdUsuarioActionPerformed
         // TODO add your handling code here:
@@ -128,7 +129,12 @@ public class VentanaLogin extends javax.swing.JFrame {
             ResultSet result = ps.executeQuery();
 
             if(result.next()){
+                //Mostrar mensaje de bienvenida
                 JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
+
+                //Redireccionar al menú principal
+                new InicioApp().setVisible(true);
+                this.setVisible(false);
             }else{
                 JOptionPane.showMessageDialog(null, "Usuario y/o contraseña incorrecto(s)", "Alerta", JOptionPane.WARNING_MESSAGE);
             }
@@ -137,7 +143,6 @@ public class VentanaLogin extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    //*****No modificar el método initComponents*****//
     
     //Al dar click salir de la aplicación
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {        
