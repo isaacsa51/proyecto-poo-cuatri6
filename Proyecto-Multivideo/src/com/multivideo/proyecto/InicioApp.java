@@ -266,7 +266,10 @@ public class InicioApp extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblProductos.setColumnSelectionAllowed(true);
+        tblProductos.getTableHeader().setReorderingAllowed(false);
         jScrollPane6.setViewportView(tblProductos);
+        tblProductos.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
