@@ -146,7 +146,8 @@ public class VentanaLogin extends javax.swing.JFrame {
     
     //Al dar click salir de la aplicación
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {        
-        bdcon.desconectarBD();                                
+        this.dispose();
+        bdcon.desconectarBD();
         System.exit(0);
     }
 

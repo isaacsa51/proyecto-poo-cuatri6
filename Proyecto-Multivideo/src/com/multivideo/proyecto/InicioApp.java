@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -19,6 +20,8 @@ public class InicioApp extends javax.swing.JFrame {
     // Instanciar clase ConexionBD
     ConexionBD bdcon = new ConexionBD();
     Connection conStatus = bdcon.connBD;
+
+    JFrame ventanaMain;
 
     public InicioApp() {
         initComponents();
@@ -97,6 +100,8 @@ public class InicioApp extends javax.swing.JFrame {
         tblProductos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menu");
+        setName("MainMenu"); // NOI18N
 
         lblFecha.setText("Fecha: ");
 
@@ -470,8 +475,8 @@ public class InicioApp extends javax.swing.JFrame {
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
         // Ejecutar la ventana correspondiente
-        this.setVisible(false);
         new Reportes().setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btnReportesActionPerformed
 
     private void btnCuentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCuentasActionPerformed
@@ -502,6 +507,7 @@ public class InicioApp extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarPelActionPerformed
 
     private void btnBuscarProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProActionPerformed
+        //Mostrar productos dentro de la tabla tblProductos
         try{
             String qBuscarProductos = "SELECT * FROM productos";
 
@@ -529,8 +535,9 @@ public class InicioApp extends javax.swing.JFrame {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {
         // Al dar click, salir de la app;
-        System.exit(0);
+        this.dispose();
         bdcon.desconectarBD();
+        System.exit(0);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
