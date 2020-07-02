@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Jun 25, 2020 at 02:58 AM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.6
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 02-07-2020 a las 05:18:12
+-- Versión del servidor: 10.4.8-MariaDB
+-- Versión de PHP: 7.3.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `multivideo`
+-- Base de datos: `multivideo`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `clientes`
+-- Estructura de tabla para la tabla `clientes`
 --
 
 CREATE TABLE `clientes` (
@@ -36,7 +37,7 @@ CREATE TABLE `clientes` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `compras`
+-- Estructura de tabla para la tabla `compras`
 --
 
 CREATE TABLE `compras` (
@@ -50,7 +51,7 @@ CREATE TABLE `compras` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `inventario`
+-- Estructura de tabla para la tabla `inventario`
 --
 
 CREATE TABLE `inventario` (
@@ -62,7 +63,7 @@ CREATE TABLE `inventario` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `peliculas`
+-- Estructura de tabla para la tabla `peliculas`
 --
 
 CREATE TABLE `peliculas` (
@@ -76,7 +77,7 @@ CREATE TABLE `peliculas` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `productos`
+-- Estructura de tabla para la tabla `productos`
 --
 
 CREATE TABLE `productos` (
@@ -88,7 +89,7 @@ CREATE TABLE `productos` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `renta`
+-- Estructura de tabla para la tabla `renta`
 --
 
 CREATE TABLE `renta` (
@@ -100,7 +101,7 @@ CREATE TABLE `renta` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuarios`
+-- Estructura de tabla para la tabla `usuarios`
 --
 
 CREATE TABLE `usuarios` (
@@ -110,25 +111,40 @@ CREATE TABLE `usuarios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `usuarios`
+-- Volcado de datos para la tabla `usuarios`
 --
 
 INSERT INTO `usuarios` (`idusuario`, `usuario`, `password`) VALUES
 (1, 'root', 'root'),
 (2, 'admin', 'test123');
 
+-- --------------------------------------------------------
+
 --
--- Indexes for dumped tables
+-- Estructura de tabla para la tabla `ventas`
+--
+
+CREATE TABLE `ventas` (
+  `id_ventas` int(11) NOT NULL,
+  `INE` varchar(20) NOT NULL,
+  `idproducto` varchar(20) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `precio` int(11) NOT NULL,
+  `fecha` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `clientes`
+-- Indices de la tabla `clientes`
 --
 ALTER TABLE `clientes`
   ADD PRIMARY KEY (`INE`);
 
 --
--- Indexes for table `compras`
+-- Indices de la tabla `compras`
 --
 ALTER TABLE `compras`
   ADD PRIMARY KEY (`idproducto_comp`),
@@ -136,7 +152,7 @@ ALTER TABLE `compras`
   ADD KEY `idpelicula_comp` (`idpelicula_comp`);
 
 --
--- Indexes for table `inventario`
+-- Indices de la tabla `inventario`
 --
 ALTER TABLE `inventario`
   ADD PRIMARY KEY (`idpelicula_inv`),
@@ -144,19 +160,19 @@ ALTER TABLE `inventario`
   ADD KEY `idproducto_inv` (`idproducto_inv`);
 
 --
--- Indexes for table `peliculas`
+-- Indices de la tabla `peliculas`
 --
 ALTER TABLE `peliculas`
   ADD PRIMARY KEY (`idpelicula`);
 
 --
--- Indexes for table `productos`
+-- Indices de la tabla `productos`
 --
 ALTER TABLE `productos`
   ADD PRIMARY KEY (`idproducto`);
 
 --
--- Indexes for table `renta`
+-- Indices de la tabla `renta`
 --
 ALTER TABLE `renta`
   ADD PRIMARY KEY (`ine_cliente`),
@@ -164,47 +180,61 @@ ALTER TABLE `renta`
   ADD KEY `idpelicula_renta` (`idpelicula_renta`);
 
 --
--- Indexes for table `usuarios`
+-- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`idusuario`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- Indices de la tabla `ventas`
+--
+ALTER TABLE `ventas`
+  ADD PRIMARY KEY (`id_ventas`),
+  ADD KEY `id_clientes` (`INE`),
+  ADD KEY `id_productos` (`idproducto`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `usuarios`
+-- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
   MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Constraints for dumped tables
+-- AUTO_INCREMENT de la tabla `ventas`
+--
+ALTER TABLE `ventas`
+  MODIFY `id_ventas` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `clientes`
+-- Filtros para la tabla `clientes`
 --
 ALTER TABLE `clientes`
   ADD CONSTRAINT `clientes_ibfk_1` FOREIGN KEY (`INE`) REFERENCES `renta` (`ine_cliente`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `compras`
+-- Filtros para la tabla `compras`
 --
 ALTER TABLE `compras`
   ADD CONSTRAINT `compras_ibfk_1` FOREIGN KEY (`idproducto_comp`) REFERENCES `productos` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `compras_ibfk_2` FOREIGN KEY (`idpelicula_comp`) REFERENCES `peliculas` (`idpelicula`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `inventario`
+-- Filtros para la tabla `inventario`
 --
 ALTER TABLE `inventario`
   ADD CONSTRAINT `inventario_ibfk_1` FOREIGN KEY (`idpelicula_inv`) REFERENCES `peliculas` (`idpelicula`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `inventario_ibfk_2` FOREIGN KEY (`idproducto_inv`) REFERENCES `productos` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `renta`
+-- Filtros para la tabla `renta`
 --
 ALTER TABLE `renta`
   ADD CONSTRAINT `renta_ibfk_1` FOREIGN KEY (`idpelicula_renta`) REFERENCES `peliculas` (`idpelicula`) ON DELETE CASCADE ON UPDATE CASCADE;

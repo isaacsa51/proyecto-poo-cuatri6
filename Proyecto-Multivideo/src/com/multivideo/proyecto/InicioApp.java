@@ -470,8 +470,8 @@ public class InicioApp extends javax.swing.JFrame {
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
         // Ejecutar la ventana correspondiente
-        new Reportes().setVisible(true);
         this.setVisible(false);
+        new Reportes().setVisible(true);
     }//GEN-LAST:event_btnReportesActionPerformed
 
     private void btnCuentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCuentasActionPerformed

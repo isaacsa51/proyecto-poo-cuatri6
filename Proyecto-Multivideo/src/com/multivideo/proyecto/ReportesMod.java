@@ -20,7 +20,8 @@ import javax.swing.table.DefaultTableModel;
 public class ReportesMod {
     
     ConexionBD bdcon = new ConexionBD();
-    Reportes vista = new Reportes();
+    Reportes vista;
+    
     public ReportesMod(Reportes vist){
        vista = vist;
     }

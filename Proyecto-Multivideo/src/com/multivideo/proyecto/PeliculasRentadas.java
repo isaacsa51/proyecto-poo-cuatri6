@@ -213,7 +213,7 @@ public class PeliculasRentadas extends javax.swing.JFrame {
     private void brtRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brtRegresarActionPerformed
         // TODO add your handling code here:
         new InicioApp().setVisible(true);
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_brtRegresarActionPerformed
 
     /**
