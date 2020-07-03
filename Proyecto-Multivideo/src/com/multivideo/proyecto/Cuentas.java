@@ -21,6 +21,8 @@ public class Cuentas extends javax.swing.JFrame {
     ConexionBD bdcon = new ConexionBD();
     Connection conStatus = bdcon.connBD;
 
+    Usuario accionesUsuarios = new Usuario();
+
     // Método para mostrar los usuarios registrados dentro de la tabla
     public void mostrarUsers() {
         try {
@@ -102,6 +104,11 @@ public class Cuentas extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblUsuarios);
 
         btnEliminar.setText("Eliminar usuario");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnAgg.setText("Agregar usuario");
         btnAgg.addActionListener(new java.awt.event.ActionListener() {
@@ -153,38 +160,13 @@ public class Cuentas extends javax.swing.JFrame {
 
     private void btnAggActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAggActionPerformed
         //Agregar usuario
-
-        Usuario agregar = new Usuario();
-
-        agregar.aggUsuario();
-        
-
-        // JFrame frame = new JFrame();
-        // //Component frame;
-
-        // JPanel panel = new JPanel();
-        // JTextField field1 = new JTextField(20);
-        // panel.add(field1);
-        // JTextField field2 = new JTextField(10);
-        // panel.add(field2);
-        // JTextField field3 = new JTextField(10);
-        // panel.add(field3);
-		// int value = JOptionPane.showConfirmDialog(frame, panel, "Enter text", JOptionPane.OK_CANCEL_OPTION);
-        // if (value == JOptionPane.OK_OPTION){
-        //     // OK was pressed
-        //     String s1 = field1.getText();
-        //     String s2 = field2.getText();
-        //     String s3 = field3.getText();
-            
-        //     System.out.println(s1);
-        //     System.out.println(s2);
-        //     System.out.println(s3);
-        // }
-
-        
-
-
+        accionesUsuarios.ventanaRegistro();
     }//GEN-LAST:event_btnAggActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        //Eliminar usuario
+        accionesUsuarios.ventanaEliminacion();
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnRegresarActionPerformed
         // Regresar al menu principal

@@ -20,7 +20,7 @@ public class ConexionBD {
             connBD = DriverManager.getConnection(url, user, password);
 
             if(connBD != null){
-                System.out.println("Conexión establecida");
+                //System.out.println("Conexión establecida");
 
                 //Esta sección valida si se puede obtener información de la base de datos y mostrarlos en consola
                 /*Statement stnt = conn.createStatement();
