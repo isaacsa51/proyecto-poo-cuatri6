@@ -165,13 +165,17 @@ public class Usuario extends JDialog{
 		btnEliminar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//Validar si los campos no esten vacios
-				//...
+				if(tfID.getText() != ""){
+					JOptionPane.showMessageDialog(null, "Favor de llenar todos los campos pedidos", "Error", JOptionPane.WARNING_MESSAGE);
+					frameEliminar.setVisible(false);
+					ventanaEliminacion();
+				}else{
+					//Hacer un parse de String a Int para poder pasar el parametro
+					int ID = Integer.parseInt(tfID.getText());
 
-				//Hacer un parse de String a Int para poder pasar el parametro
-				int ID = Integer.parseInt(tfID.getText());
-
-				//Eliminar usuario
-				eliminarUsuario(ID);
+					//Eliminar usuario
+					eliminarUsuario(ID);
+				}
 			}
 		});
 
