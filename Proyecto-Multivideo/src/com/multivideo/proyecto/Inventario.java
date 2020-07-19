@@ -219,7 +219,64 @@ public class Inventario extends JDialog{
     }
 
 	protected void ventanaElimProducto(){
-		
+		Container c; 
+		JLabel tituloVentana; 
+		JLabel lblProducto; 
+		JComboBox lstProductos; 
+		JButton btnModificar; 
+		JButton btnLimpiar;
+
+		String years[] = { "1995", "1996", "1997", "1998", 
+							"1999", "2000", "2001", "2002", 
+							"2003", "2004", "2005", "2006", 
+							"2007", "2008", "2009", "2010", 
+							"2011", "2012", "2013", "2014", 
+							"2015", "2016", "2017", "2018", 
+							"2019" }; 
+			
+			
+		setTitle("Modificar Producto(s)");
+		setBounds(300, 90, 600, 250); 
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
+		setResizable(false); 
+
+		c = getContentPane(); 
+		c.setLayout(null); 
+
+		//Titulo ventana
+		tituloVentana = new JLabel("Eliminar Producto"); 
+		tituloVentana.setFont(new Font("Arial", Font.BOLD, 18)); 
+		tituloVentana.setSize(300, 30); 
+		tituloVentana.setLocation(225, 30); 
+		c.add(tituloVentana); 
+
+		//Lista para los productos
+		lblProducto = new JLabel("Producto: "); 
+		lblProducto.setFont(new Font("Arial", Font.PLAIN, 14)); 
+		lblProducto.setSize(100, 20); 
+		lblProducto.setLocation(100, 100); 
+		c.add(lblProducto);  
+
+		lstProductos = new JComboBox(years); 
+		lstProductos.setFont(new Font("Arial", Font.PLAIN, 14)); 
+		lstProductos.setSize(300, 25); 
+		lstProductos.setLocation(200, 100); 
+		c.add(lstProductos);
+
+		//Botones
+		btnModificar = new JButton("Eliminar Producto"); 
+		btnModificar.setFont(new Font("Arial", Font.PLAIN, 15)); 
+		btnModificar.setSize(200, 25); 
+		btnModificar.setLocation(100, 150); 
+		c.add(btnModificar); 
+
+		btnLimpiar = new JButton("Regresar"); 
+		btnLimpiar.setFont(new Font("Arial", Font.PLAIN, 15)); 
+		btnLimpiar.setSize(200, 25); 
+		btnLimpiar.setLocation(301, 150); 
+		c.add(btnLimpiar);
+
+		setVisible(true);   
 	}
 	
 	protected void ventanaAggPelicula(){
