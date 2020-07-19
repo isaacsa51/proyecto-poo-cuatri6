@@ -1,252 +1,337 @@
+
 package com.multivideo.proyecto;
 
+import java.awt.*;
+import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+public class Inventario extends JDialog{
+	// Instanciar BD
+	ConexionBD bdcon = new ConexionBD();
+	Connection conStatus = bdcon.connBD;
+	
+	//Ventanas
+	JFrame frameAggPro = new JFrame();
+	JFrame frameModPro = new JFrame();
+	JFrame frameElimPro = new JFrame();
 
-public class Inventario extends javax.swing.JFrame {
-    
-    // Instanciar conexión
-    ConexionBD bdcon = new ConexionBD();
-    Connection conStatus = bdcon.connBD;
+	JFrame frameAggPel = new JFrame();
+	JFrame frameModPel = new JFrame();
+	JFrame frameElimPel = new JFrame();
 
-    public void mostrarProductos() {
-        try {
-            String queryProductos = "SELECT * FROM productos";
+	protected void ventanaAggProducto(){
+		// Definir propiedades de la ventana y su tipo de layout
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frameAggPro.pack();
+		frameAggPro.setSize(600,300);
+		frameAggPro.setResizable(false);
+		frameAggPro.setLocationRelativeTo(null);
+		frameAggPro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameAggPro.setVisible(true);
+	
+		// Titulo de la ventana
+		frameAggPro.setTitle("Agregar producto");
+		JPanel panelInventario = new JPanel();
+		JPanel panel = new JPanel(new GridBagLayout());
 
-            PreparedStatement execQuery = conStatus.prepareStatement(queryProductos);
-            ResultSet resQuery = execQuery.executeQuery();
 
-            DefaultTableModel tablaProductos = (DefaultTableModel) tblProductos.getModel();
-            tablaProductos.setRowCount(0);
+		// Más propiedades
+		panelInventario.setLayout(new BoxLayout(panelInventario, BoxLayout.Y_AXIS));
+		JPanel panelAggPro = new JPanel();
 
-            while (resQuery.next()) {
-                Object productos[] = { resQuery.getString("idproducto"), resQuery.getString("nombre"),resQuery.getString("cantidad"), resQuery.getFloat("precio")};
+		panelInventario.add(panelAggPro);
+		panelInventario.add(panel);
+		frameAggPro.add(panelInventario);
 
-                // Poner información sacada en cada columna de la tabla
-                tablaProductos.addRow(productos);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e);
-        }
+		// Insertar label a la ventana para indicar al usuario que ventana abrió
+		JLabel lblTitulo = new JLabel("AGREGAR NUEVOS PRODUCTOS");
+		panelAggPro.add(lblTitulo);
+
+		// Constraints for the layout
+		GridBagConstraints grid = new GridBagConstraints();
+		grid.insets = new Insets(5, 5, 5, 5);
+		grid.anchor = GridBagConstraints.WEST;
+
+		// Poner valores iniciales en 0,0
+		grid.gridx = 0;
+		grid.gridy = 0;
+
+		//Campos a agregar
+		JLabel lblID  = new JLabel("ID del producto: ");
+		panel.add(lblID, grid);
+		grid.gridx = 1;
+		grid.gridy = 0;
+		JTextField tfID = new JTextField(20);
+		panel.add(tfID, grid);
+		grid.gridx = 0; 
+		grid.gridy = 0;
+
+		JLabel lblNombre = new JLabel("Nombre del producto: ");
+		grid.gridx = 0;
+		grid.gridy = 1;
+		panel.add(lblNombre, grid);
+		JTextField tfNombre = new JTextField(20);
+		grid.gridx = 1; 
+		grid.gridy = 1;
+		panel.add(tfNombre, grid);
+
+		JLabel lblCantidad = new JLabel("Cantidad a ingresar del producto: ");
+		grid.gridx = 0;
+		grid.gridy = 2;
+		panel.add(lblCantidad, grid);
+		JTextField tfCantidad = new JTextField(20);
+		grid.gridx = 1; 
+		grid.gridy = 2;
+		panel.add(tfCantidad, grid);
+
+		JLabel lblPrecio = new JLabel("Precio del producto: ");
+		grid.gridx = 0;
+		grid.gridy = 3;
+		panel.add(lblPrecio, grid);
+		JTextField tfPrecio = new JTextField(20);
+		grid.gridx = 1; 
+		grid.gridy = 3;
+		panel.add(tfPrecio, grid);
+
+		//Botones
+		JButton btnAgregar = new JButton("Agregar");
+		grid.fill = GridBagConstraints.HORIZONTAL;
+		grid.gridx = 0;
+		grid.gridy = 4;
+		panel.add(btnAgregar, grid);
+
+
+		JButton btnCancelar = new JButton("Cancelar");
+		grid.gridx = 1;
+		grid.gridy = 4;
+		panel.add(btnCancelar, grid);
+
+		// Acciones de los botones
+		btnCancelar.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				//Cerrar ventana
+				frameAggPro.dispose();
+			}
+		});
+	}
+
+	protected void ventanaModProducto(){
+		
+		Container c; 
+		JLabel tituloVentana; 
+		JLabel lblProducto; 
+		JTextField tfPrecio;
+		JLabel lblCantidad; 
+		JTextField tfCantidad; 
+		JLabel lblPrecio; 
+		JComboBox lstProductos; 
+		JButton btnModificar; 
+		JButton btnLimpiar;
+		JButton btnSalir;
+
+		String years[] = { "1995", "1996", "1997", "1998", 
+							"1999", "2000", "2001", "2002", 
+							"2003", "2004", "2005", "2006", 
+							"2007", "2008", "2009", "2010", 
+							"2011", "2012", "2013", "2014", 
+							"2015", "2016", "2017", "2018", 
+							"2019" }; 
+			
+			
+		setTitle("Modificar Producto(s)");
+		setBounds(300, 90, 600, 400); 
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
+		setResizable(false); 
+
+		c = getContentPane(); 
+		c.setLayout(null); 
+
+		//Titulo ventana
+		tituloVentana = new JLabel("Modificar Producto"); 
+		tituloVentana.setFont(new Font("Arial", Font.BOLD, 18)); 
+		tituloVentana.setSize(300, 30); 
+		tituloVentana.setLocation(225, 30); 
+		c.add(tituloVentana); 
+
+		//Lista para los productos
+		lblProducto = new JLabel("Producto: "); 
+		lblProducto.setFont(new Font("Arial", Font.PLAIN, 14)); 
+		lblProducto.setSize(100, 20); 
+		lblProducto.setLocation(100, 100); 
+		c.add(lblProducto);  
+
+		lstProductos = new JComboBox(years); 
+		lstProductos.setFont(new Font("Arial", Font.PLAIN, 14)); 
+		lstProductos.setSize(300, 25); 
+		lstProductos.setLocation(200, 100); 
+		c.add(lstProductos);
+
+		//Text Field para cantidad
+		lblCantidad = new JLabel("Cantidad: "); 
+		lblCantidad.setFont(new Font("Arial", Font.PLAIN, 14)); 
+		lblCantidad.setSize(190, 20); 
+		lblCantidad.setLocation(100, 140); 
+		c.add(lblCantidad); 
+
+		tfCantidad = new JTextField(); 
+		tfCantidad.setFont(new Font("Arial", Font.PLAIN, 14)); 
+		tfCantidad.setSize(300, 25); 
+		tfCantidad.setLocation(200, 140); 
+		c.add(tfCantidad);  
+
+		//TextField para precio
+		lblPrecio = new JLabel("Precio: "); 
+		lblPrecio.setFont(new Font("Arial", Font.PLAIN, 14)); 
+		lblPrecio.setSize(190, 20); 
+		lblPrecio.setLocation(100, 180); 
+		c.add(lblPrecio); 
+
+		tfPrecio = new JTextField(); 
+		tfPrecio.setFont(new Font("Arial", Font.PLAIN, 14)); 
+		tfPrecio.setSize(300, 25); 
+		tfPrecio.setLocation(200, 180); 
+		c.add(tfPrecio);  
+
+		//Botones
+		btnModificar = new JButton("Modificar"); 
+		btnModificar.setFont(new Font("Arial", Font.PLAIN, 15)); 
+		btnModificar.setSize(200, 25); 
+		btnModificar.setLocation(100, 220); 
+		c.add(btnModificar); 
+
+		btnLimpiar = new JButton("Limpiar"); 
+		btnLimpiar.setFont(new Font("Arial", Font.PLAIN, 15)); 
+		btnLimpiar.setSize(200, 25); 
+		btnLimpiar.setLocation(301, 220); 
+		c.add(btnLimpiar);
+
+		btnSalir = new JButton("Regresar la menú principal");
+		btnSalir.setFont(new Font("Arial", Font.PLAIN, 15)); 
+		btnSalir.setSize(400, 25); 
+		btnSalir.setLocation(100, 260); 
+		c.add(btnSalir);
+
+		setVisible(true);        
     }
 
-    public void mostrarPeliculas() {
-        try {
-            String queryPeliculas = "SELECT * FROM peliculas";
+	protected void ventanaElimProducto(){
+		
+	}
+	
+	protected void ventanaAggPelicula(){
+		// Definir propiedades de la ventana y su tipo de layout
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frameAggPel.pack();
+		frameAggPel.setSize(600,300);
+		frameAggPel.setResizable(false);
+		frameAggPel.setLocationRelativeTo(null);
+		frameAggPel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameAggPel.setVisible(true);
+	
+		// Titulo de la ventana
+		frameAggPel.setTitle("Agregar Pelicula(s)");
+		JPanel panelInventario = new JPanel();
+		JPanel panel = new JPanel(new GridBagLayout());
 
-            PreparedStatement execQuery = conStatus.prepareStatement(queryPeliculas);
-            ResultSet resQuery = execQuery.executeQuery();
+		// Más propiedades
+		panelInventario.setLayout(new BoxLayout(panelInventario, BoxLayout.Y_AXIS));
+		JPanel panelAggPel = new JPanel();
 
-            DefaultTableModel tablaPeliculas = (DefaultTableModel) tblPeliculas.getModel();
-            tablaPeliculas.setRowCount(0);
+		panelInventario.add(panelAggPel);
+		panelInventario.add(panel);
+		frameAggPel.add(panelInventario);
 
-            while (resQuery.next()) {
-                Object peliculas[] = { resQuery.getString("idpelicula"), resQuery.getString("nombre"),resQuery.getString("genero"), resQuery.getFloat("precio"), resQuery.getInt("stock")};
+		// Insertar label a la ventana para indicar al usuario que ventana abrió
+		JLabel lblTitulo = new JLabel("AGREGAR NUEVAS PELICULAS");
+		panelAggPel.add(lblTitulo);
 
-                // Poner información sacada en cada columna de la tabla
-                tablaPeliculas.addRow(peliculas);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e);
-        }
-    }
+		// Constraints for the layout
+		GridBagConstraints grid = new GridBagConstraints();
+		grid.insets = new Insets(5, 5, 5, 5);
+		grid.anchor = GridBagConstraints.WEST;
 
-    public Inventario() {
-        initComponents();
-        mostrarProductos();
-        mostrarPeliculas();
-    }
+		// Poner valores iniciales en 0,0
+		grid.gridx = 0;
+		grid.gridy = 0;
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+		//Campos a agregar
+		JLabel lblID  = new JLabel("ID de la pelicula: ");
+		panel.add(lblID, grid);
+		grid.gridx = 1;
+		grid.gridy = 0;
+		JTextField tfID = new JTextField(20);
+		panel.add(tfID, grid);
+		grid.gridx = 0; 
+		grid.gridy = 0;
 
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tblPeliculas = new javax.swing.JTable();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblProductos = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        btnRegresar = new javax.swing.JButton();
+		JLabel lblNombre = new JLabel("Nombre de la pelicula: ");
+		grid.gridx = 0;
+		grid.gridy = 1;
+		panel.add(lblNombre, grid);
+		JTextField tfNombre = new JTextField(20);
+		grid.gridx = 1; 
+		grid.gridy = 1;
+		panel.add(tfNombre, grid);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		JLabel lblGenero = new JLabel("Genero de la pelicula: ");
+		grid.gridx = 0;
+		grid.gridy = 2;
+		panel.add(lblGenero, grid);
+		JTextField tfGenero = new JTextField(20);
+		grid.gridx = 1;
+		grid.gridy = 2;
+		panel.add(tfGenero, grid);
 
-        jLabel1.setFont(new java.awt.Font("sansserif", 3, 14)); // NOI18N
-        jLabel1.setText("Productos");
+		JLabel lblCantidad = new JLabel("Cantidad a ingresar de la pelicula: ");
+		grid.gridx = 0;
+		grid.gridy = 3;
+		panel.add(lblCantidad, grid);
+		JTextField tfCantidad = new JTextField(20);
+		grid.gridx = 1; 
+		grid.gridy = 3;
+		panel.add(tfCantidad, grid);
 
-        tblPeliculas.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(tblPeliculas);
+		JLabel lblPrecio = new JLabel("Precio del pelicula: ");
+		grid.gridx = 0;
+		grid.gridy = 4;
+		panel.add(lblPrecio, grid);
+		JTextField tfPrecio = new JTextField(20);
+		grid.gridx = 1; 
+		grid.gridy = 4;
+		panel.add(tfPrecio, grid);
 
-        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane3.setViewportView(tblProductos);
+		//Botones
+		JButton btnAgregar = new JButton("Agregar");
+		grid.fill = GridBagConstraints.HORIZONTAL;
+		grid.gridx = 0;
+		grid.gridy = 5;
+		panel.add(btnAgregar, grid);
 
-        jLabel2.setFont(new java.awt.Font("sansserif", 3, 14)); // NOI18N
-        jLabel2.setText("Peliculas");
 
-        jButton2.setText("Buscar");
+		JButton btnCancelar = new JButton("Cancelar");
+		grid.gridx = 1;
+		grid.gridy = 5;
+		panel.add(btnCancelar, grid);
 
-        jButton3.setText("Buscar");
+		// Acciones de los botones
+		btnCancelar.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				//Cerrar ventana
+				frameAggPel.dispose();
+			}
+		});
+	}
 
-        jButton4.setText("Eliminar");
+	protected void ventanaModPelicula(){
 
-        jButton6.setText("Agregar");
+	}
 
-        jButton7.setText("Modificar");
+	protected void ventanaElimPelicula(){
+		
+	}
 
-        jButton8.setText("Agregar");
-
-        jButton9.setText("Modificar");
-
-        jButton5.setText("Eliminar");
-
-        jLabel3.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
-        jLabel3.setText("Stock/Conteo de productos");
-
-        btnRegresar.setText("Regresar al menú principal");
-        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegresarActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(27, 27, 27)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
-                        .addGap(24, 24, 24)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnRegresar)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton4)))
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jButton5))))))
-                .addContainerGap(12, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButton2)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton3))
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7)
-                    .addComponent(jButton4)
-                    .addComponent(jButton8)
-                    .addComponent(jButton9)
-                    .addComponent(jButton5))
-                .addGap(18, 39, Short.MAX_VALUE)
-                .addComponent(btnRegresar)
-                .addContainerGap())
-        );
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        //Regresar
-        new InicioApp().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnRegresarActionPerformed
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnRegresar;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTable tblPeliculas;
-    private javax.swing.JTable tblProductos;
-    // End of variables declaration//GEN-END:variables
 }

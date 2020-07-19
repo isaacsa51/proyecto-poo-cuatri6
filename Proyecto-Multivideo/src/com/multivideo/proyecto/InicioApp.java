@@ -463,7 +463,7 @@ public class InicioApp extends javax.swing.JFrame {
 
     private void btnStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStockActionPerformed
         // Ejecutar la ventana correspondiente
-        new Inventario().setVisible(true);
+        new StockVentana().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnStockActionPerformed
 
@@ -480,7 +480,7 @@ public class InicioApp extends javax.swing.JFrame {
 
     private void btnCuentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCuentasActionPerformed
         // Ejecutar la ventana correspondiente
-        new Cuentas().setVisible(true);
+        new CuentasVentana().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnCuentasActionPerformed
 

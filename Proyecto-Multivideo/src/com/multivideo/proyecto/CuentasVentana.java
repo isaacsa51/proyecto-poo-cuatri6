@@ -15,7 +15,7 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-public class Cuentas extends javax.swing.JFrame {
+public class CuentasVentana extends javax.swing.JFrame {
 
     // Instanciar conexión
     ConexionBD bdcon = new ConexionBD();
@@ -46,7 +46,7 @@ public class Cuentas extends javax.swing.JFrame {
         }
     }
 
-    public Cuentas() {
+    public CuentasVentana() {
         initComponents();
         mostrarUsers();
     }
