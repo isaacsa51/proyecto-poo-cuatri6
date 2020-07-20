@@ -116,31 +116,17 @@ public class VentanaLogin extends javax.swing.JFrame {
 
     //Iniciar sesión al dar click al botón
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {
-        Connection connection;
-        PreparedStatement ps;
-        
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/multivideo?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+        //Instanciar objeto Usuario
+        Usuario usuarioAcciones = new Usuario();
 
-            ps = connection.prepareStatement("SELECT * FROM usuarios WHERE usuario=? AND password=?");
+        //Obtener los valores de los TextField
+        String user = txfdUsuario.getText();
+        String pass = String.valueOf(pfldContrasena.getPassword());
 
-            ps.setString(1, txfdUsuario.getText());
-            ps.setString(2, String.valueOf(pfldContrasena.getPassword()));
-            ResultSet result = ps.executeQuery();
-
-            if(result.next()){
-                //Mostrar mensaje de bienvenida
-                JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
-
-                //Redireccionar al menú principal
-                new InicioApp().setVisible(true);
-                this.setVisible(false);
-            }else{
-                JOptionPane.showMessageDialog(null, "Usuario y/o contraseña incorrecto(s)", "Alerta", JOptionPane.WARNING_MESSAGE);
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        //Mandar a llamar el método login para poder hacer los queries necesarios
+        if(usuarioAcciones.loginUsuario(user, pass) == 1){
+            //Cerrar ventana actual
+			this.setVisible(false);
         }
     }
     
@@ -150,36 +136,6 @@ public class VentanaLogin extends javax.swing.JFrame {
         bdcon.desconectarBD();
         System.exit(0);
     }
-
-    //Ejecución de la aplicación
-    //Se comentó el main de esta aplicación para poder validar si hay conexión con la BD primero y después desde la clase MainClass ejecutar la ventana
-
-    // public static void main(String args[]) {
-    //     try {
-    //         for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-    //             if ("Nimbus".equals(info.getName())) {
-    //                 javax.swing.UIManager.setLookAndFeel(info.getClassName());
-    //                 break;
-    //             }
-    //         }
-    //     } catch (ClassNotFoundException ex) {
-    //         java.util.logging.Logger.getLogger(VentanaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    //     } catch (InstantiationException ex) {
-    //         java.util.logging.Logger.getLogger(VentanaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    //     } catch (IllegalAccessException ex) {
-    //         java.util.logging.Logger.getLogger(VentanaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    //     } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-    //         java.util.logging.Logger.getLogger(VentanaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    //     }
-    //     //</editor-fold>
-
-    //     /* Create and display the form */
-    //     java.awt.EventQueue.invokeLater(new Runnable() {
-    //         public void run() {
-    //             new VentanaLogin().setVisible(true);
-    //         }
-    //     });
-    // }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExit;

@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javax.swing.*;
 
 public class Usuario extends JDialog{
@@ -13,6 +16,37 @@ public class Usuario extends JDialog{
 	//Ventanas
 	JFrame frameAgg = new JFrame();
 	JFrame frameEliminar = new JFrame();
+
+	protected int loginUsuario(String usuario, String password){
+        try {
+			String loginQuery = "SELECT * FROM usuarios WHERE usuario=? AND password=?";
+
+			PreparedStatement execQuery = conStatus.prepareStatement(loginQuery);
+			
+			execQuery.setString(1, usuario);
+			execQuery.setString(2, password);
+			ResultSet resultQuery = execQuery.executeQuery();
+
+			//Comprobar datos ingresados e iniciar sesión
+			if(resultQuery.next()){
+				//Mostrar mensaje de bienvenida
+                JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
+
+                //Redireccionar al menú principal
+				new InicioApp().setVisible(true);
+				new VentanaLogin().dispose();
+
+				return 1;
+			}else{
+				JOptionPane.showMessageDialog(null, "Usuario y/o contraseña incorrecto(s)", "Alerta", JOptionPane.WARNING_MESSAGE);
+			}
+
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+
+		return 0;
+	}
 
 	protected void ventanaRegistro(){
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
