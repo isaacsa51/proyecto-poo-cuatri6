@@ -30,7 +30,7 @@ public class Inventario extends JDialog{
 		frameAggPro.setSize(600,300);
 		frameAggPro.setResizable(false);
 		frameAggPro.setLocationRelativeTo(null);
-		frameAggPro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameAggPro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frameAggPro.setVisible(true);
 	
 		// Titulo de la ventana
@@ -49,6 +49,7 @@ public class Inventario extends JDialog{
 
 		// Insertar label a la ventana para indicar al usuario que ventana abrió
 		JLabel lblTitulo = new JLabel("AGREGAR NUEVOS PRODUCTOS");
+		lblTitulo.setFont(new Font("Arial", Font.BOLD, 18)); 
 		panelAggPro.add(lblTitulo);
 
 		// Constraints for the layout
@@ -120,18 +121,49 @@ public class Inventario extends JDialog{
 	}
 
 	protected void ventanaModProducto(){
-		
-		Container c; 
-		JLabel tituloVentana; 
-		JLabel lblProducto; 
-		JTextField tfPrecio;
-		JLabel lblCantidad; 
-		JTextField tfCantidad; 
-		JLabel lblPrecio; 
-		JComboBox lstProductos; 
-		JButton btnModificar; 
-		JButton btnLimpiar;
-		JButton btnSalir;
+
+		//Ventana test
+		// Definir propiedades de la ventana y su tipo de layout
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frameModPro.pack();
+		frameModPro.setSize(600,300);
+		frameModPro.setResizable(false);
+		frameModPro.setLocationRelativeTo(null);
+		frameModPro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frameModPro.setVisible(true);
+	
+		// Titulo de la ventana
+		frameModPro.setTitle("Modificar producto");
+		JPanel panelInventario = new JPanel();
+		JPanel panel = new JPanel(new GridBagLayout());
+
+		// Más propiedades
+		panelInventario.setLayout(new BoxLayout(panelInventario, BoxLayout.Y_AXIS));
+		JPanel panelModPro = new JPanel();
+
+		panelInventario.add(panelModPro);
+		panelInventario.add(panel);
+		frameModPro.add(panelInventario);
+
+		// Insertar label a la ventana para indicar al usuario que ventana abrió
+		JLabel lblTitulo = new JLabel("MODIFICAR PRODUCTO");
+		lblTitulo.setFont(new Font("Arial", Font.BOLD, 18)); 
+		panelModPro.add(lblTitulo);
+
+		// Constraints for the layout
+		GridBagConstraints grid = new GridBagConstraints();
+		grid.insets = new Insets(5, 5, 5, 5);
+		grid.anchor = GridBagConstraints.WEST;
+
+		// Poner valores iniciales en 0,0
+		grid.gridx = 0;
+		grid.gridy = 0;
+
+		//Campos a agregar
+		JLabel lblID  = new JLabel("Nombre del producto: ");
+		panel.add(lblID, grid);
+		grid.gridx = 1;
+		grid.gridy = 0;
 
 		String years[] = { "1995", "1996", "1997", "1998", 
 							"1999", "2000", "2001", "2002", 
@@ -139,83 +171,50 @@ public class Inventario extends JDialog{
 							"2007", "2008", "2009", "2010", 
 							"2011", "2012", "2013", "2014", 
 							"2015", "2016", "2017", "2018", 
-							"2019" }; 
-			
-			
-		setTitle("Modificar Producto(s)");
-		setBounds(300, 90, 600, 400); 
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
-		setResizable(false); 
+							"2019" };
 
-		c = getContentPane(); 
-		c.setLayout(null); 
+		JComboBox lstProductos = new JComboBox(years); 
+		panel.add(lstProductos, grid);
+		grid.gridx = 0;
+		grid.gridy = 0;
 
-		//Titulo ventana
-		tituloVentana = new JLabel("Modificar Producto"); 
-		tituloVentana.setFont(new Font("Arial", Font.BOLD, 18)); 
-		tituloVentana.setSize(300, 30); 
-		tituloVentana.setLocation(225, 30); 
-		c.add(tituloVentana); 
+		JLabel lblCantidad = new JLabel("Cantidad a ingresar del producto: ");
+		grid.gridx = 0; //0
+		grid.gridy = 1; //2
+		panel.add(lblCantidad, grid);
+		JTextField tfCantidad = new JTextField(20);
+		grid.gridx = 1; //1
+		grid.gridy = 1; //2
+		panel.add(tfCantidad, grid);
 
-		//Lista para los productos
-		lblProducto = new JLabel("Producto: "); 
-		lblProducto.setFont(new Font("Arial", Font.PLAIN, 14)); 
-		lblProducto.setSize(100, 20); 
-		lblProducto.setLocation(100, 100); 
-		c.add(lblProducto);  
-
-		lstProductos = new JComboBox(years); 
-		lstProductos.setFont(new Font("Arial", Font.PLAIN, 14)); 
-		lstProductos.setSize(300, 25); 
-		lstProductos.setLocation(200, 100); 
-		c.add(lstProductos);
-
-		//Text Field para cantidad
-		lblCantidad = new JLabel("Cantidad: "); 
-		lblCantidad.setFont(new Font("Arial", Font.PLAIN, 14)); 
-		lblCantidad.setSize(190, 20); 
-		lblCantidad.setLocation(100, 140); 
-		c.add(lblCantidad); 
-
-		tfCantidad = new JTextField(); 
-		tfCantidad.setFont(new Font("Arial", Font.PLAIN, 14)); 
-		tfCantidad.setSize(300, 25); 
-		tfCantidad.setLocation(200, 140); 
-		c.add(tfCantidad);  
-
-		//TextField para precio
-		lblPrecio = new JLabel("Precio: "); 
-		lblPrecio.setFont(new Font("Arial", Font.PLAIN, 14)); 
-		lblPrecio.setSize(190, 20); 
-		lblPrecio.setLocation(100, 180); 
-		c.add(lblPrecio); 
-
-		tfPrecio = new JTextField(); 
-		tfPrecio.setFont(new Font("Arial", Font.PLAIN, 14)); 
-		tfPrecio.setSize(300, 25); 
-		tfPrecio.setLocation(200, 180); 
-		c.add(tfPrecio);  
+		JLabel lblPrecio = new JLabel("Precio del producto: ");
+		grid.gridx = 0; //0
+		grid.gridy = 2; //3
+		panel.add(lblPrecio, grid);
+		JTextField tfPrecio = new JTextField(20);
+		grid.gridx = 1; //1
+		grid.gridy = 2; //3
+		panel.add(tfPrecio, grid);
 
 		//Botones
-		btnModificar = new JButton("Modificar"); 
-		btnModificar.setFont(new Font("Arial", Font.PLAIN, 15)); 
-		btnModificar.setSize(200, 25); 
-		btnModificar.setLocation(100, 220); 
-		c.add(btnModificar); 
+		JButton btnAgregar = new JButton("Modificar");
+		grid.fill = GridBagConstraints.HORIZONTAL;
+		grid.gridx = 0; //0
+		grid.gridy = 3; //4
+		panel.add(btnAgregar, grid);
 
-		btnLimpiar = new JButton("Limpiar"); 
-		btnLimpiar.setFont(new Font("Arial", Font.PLAIN, 15)); 
-		btnLimpiar.setSize(200, 25); 
-		btnLimpiar.setLocation(301, 220); 
-		c.add(btnLimpiar);
+		JButton btnCancelar = new JButton("Cancelar");
+		grid.gridx = 1; //1
+		grid.gridy = 3; //4
+		panel.add(btnCancelar, grid);
 
-		btnSalir = new JButton("Regresar la menú principal");
-		btnSalir.setFont(new Font("Arial", Font.PLAIN, 15)); 
-		btnSalir.setSize(400, 25); 
-		btnSalir.setLocation(100, 260); 
-		c.add(btnSalir);
-
-		setVisible(true);        
+		// Acciones de los botones
+		btnCancelar.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				//Cerrar ventana
+				frameModPro.dispose();
+			}
+		});    
     }
 
 	protected void ventanaElimProducto(){
