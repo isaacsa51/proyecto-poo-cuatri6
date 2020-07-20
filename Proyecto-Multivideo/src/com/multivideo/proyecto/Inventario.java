@@ -397,11 +397,184 @@ public class Inventario extends JDialog{
 	}
 
 	protected void ventanaModPelicula(){
+		// Definir propiedades de la ventana y su tipo de layout
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frameModPel.pack();
+		frameModPel.setSize(600,300);
+		frameModPel.setResizable(false);
+		frameModPel.setLocationRelativeTo(null);
+		frameModPel.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frameModPel.setVisible(true);
+	
+		// Titulo de la ventana
+		frameModPel.setTitle("Modificar pelicula");
+		JPanel panelInventario = new JPanel();
+		JPanel panel = new JPanel(new GridBagLayout());
 
+		// Más propiedades
+		panelInventario.setLayout(new BoxLayout(panelInventario, BoxLayout.Y_AXIS));
+		JPanel panelModPro = new JPanel();
+
+		panelInventario.add(panelModPro);
+		panelInventario.add(panel);
+		frameModPel.add(panelInventario);
+
+		// Insertar label a la ventana para indicar al usuario que ventana abrió
+		JLabel lblTitulo = new JLabel("MODIFICAR PELICULA");
+		lblTitulo.setFont(new Font("Arial", Font.BOLD, 18)); 
+		panelModPro.add(lblTitulo);
+
+		// Constraints for the layout
+		GridBagConstraints grid = new GridBagConstraints();
+		grid.insets = new Insets(5, 5, 5, 5);
+		grid.anchor = GridBagConstraints.WEST;
+
+		// Poner valores iniciales en 0,0
+		grid.gridx = 0;
+		grid.gridy = 0;
+
+		//Campos a agregar
+		JLabel lblNombre  = new JLabel("Nombre de la pelicula: ");
+		panel.add(lblNombre, grid);
+		grid.gridx = 1;
+		grid.gridy = 0;
+
+		String years[] = { "1995", "1996", "1997", "1998", 
+							"1999", "2000", "2001", "2002", 
+							"2003", "2004", "2005", "2006", 
+							"2007", "2008", "2009", "2010", 
+							"2011", "2012", "2013", "2014", 
+							"2015", "2016", "2017", "2018", 
+							"2019" };
+
+		JComboBox lstProductos = new JComboBox(years); 
+		panel.add(lstProductos, grid);
+		grid.gridx = 0;
+		grid.gridy = 0;
+
+		JLabel lblGenero = new JLabel("Genero: ");
+		grid.gridx = 0; //0
+		grid.gridy = 1; //2
+		panel.add(lblGenero, grid);
+		JTextField tfGenero = new JTextField(20);
+		grid.gridx = 1; //1
+		grid.gridy = 1; //2
+		panel.add(tfGenero, grid);
+
+		JLabel lblPrecio = new JLabel("Precio del producto: ");
+		grid.gridx = 0; //0
+		grid.gridy = 2; //3
+		panel.add(lblPrecio, grid);
+		JTextField tfPrecio = new JTextField(20);
+		grid.gridx = 1; //1
+		grid.gridy = 2; //3
+		panel.add(tfPrecio, grid);
+
+		JLabel lblCantidad = new JLabel("Cantidad total de la pelicula: ");
+		grid.gridx = 0; //0
+		grid.gridy = 3; //2
+		panel.add(lblCantidad, grid);
+		JTextField tfCantidad = new JTextField(20);
+		grid.gridx = 1; //1
+		grid.gridy = 3; //2
+		panel.add(tfCantidad, grid);
+
+		//Botones
+		JButton btnModificar = new JButton("Modificar");
+		grid.fill = GridBagConstraints.HORIZONTAL;
+		grid.gridx = 0; //0
+		grid.gridy = 4; //4
+		panel.add(btnModificar, grid);
+
+		JButton btnCancelar = new JButton("Cancelar");
+		grid.gridx = 1; //1
+		grid.gridy = 4; //4
+		panel.add(btnCancelar, grid);
+
+		// Acciones de los botones
+		btnCancelar.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				//Cerrar ventana
+				frameModPel.dispose();
+			}
+		});
 	}
 
 	protected void ventanaElimPelicula(){
-		
+		// Definir propiedades de la ventana y su tipo de layout
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frameElimPro.pack();
+		frameElimPro.setSize(400,200);
+		frameElimPro.setResizable(false);
+		frameElimPro.setLocationRelativeTo(null);
+		frameElimPro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frameElimPro.setVisible(true);
+	
+		// Titulo de la ventana
+		frameElimPro.setTitle("Eliminar pelicula");
+		JPanel panelInventario = new JPanel();
+		JPanel panel = new JPanel(new GridBagLayout());
+
+		// Más propiedades
+		panelInventario.setLayout(new BoxLayout(panelInventario, BoxLayout.Y_AXIS));
+		JPanel panelEliPro = new JPanel();
+
+		panelInventario.add(panelEliPro);
+		panelInventario.add(panel);
+		frameElimPro.add(panelInventario);
+
+		// Insertar label a la ventana para indicar al usuario que ventana abrió
+		JLabel lblTitulo = new JLabel("ELIMINAR PELICULA");
+		lblTitulo.setFont(new Font("Arial", Font.BOLD, 18)); 
+		panelEliPro.add(lblTitulo);
+
+		// Constraints for the layout
+		GridBagConstraints grid = new GridBagConstraints();
+		grid.insets = new Insets(5, 5, 5, 5);
+		grid.anchor = GridBagConstraints.WEST;
+
+		// Poner valores iniciales en 0,0
+		grid.gridx = 0;
+		grid.gridy = 0;
+
+		//Campos a agregar
+		JLabel lblNombre  = new JLabel("Nombre de la pelicula: ");
+		panel.add(lblNombre, grid);
+		grid.gridx = 1;
+		grid.gridy = 0;
+
+		String years[] = { "1995", "1996", "1997", "1998", 
+							"1999", "2000", "2001", "2002", 
+							"2003", "2004", "2005", "2006", 
+							"2007", "2008", "2009", "2010", 
+							"2011", "2012", "2013", "2014", 
+							"2015", "2016", "2017", "2018", 
+							"2019" };
+
+		JComboBox lstPeliculas = new JComboBox(years); 
+		panel.add(lstPeliculas, grid);
+		grid.gridx = 0;
+		grid.gridy = 0;
+
+		//Botones
+		JButton btnEliminar = new JButton("Eliminar");
+		grid.fill = GridBagConstraints.HORIZONTAL;
+		grid.gridx = 0; //0
+		grid.gridy = 1; //4
+		panel.add(btnEliminar, grid);
+
+		JButton btnCancelar = new JButton("Cancelar");
+		grid.gridx = 1; //1
+		grid.gridy = 1; //4
+		panel.add(btnCancelar, grid);
+
+		// Acciones de los botones
+		btnCancelar.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				//Cerrar ventana
+				frameElimPro.dispose();
+			}
+		});  
 	}
 
 }
