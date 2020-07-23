@@ -112,6 +112,27 @@ public class Inventario extends JDialog{
 		panel.add(btnCancelar, grid);
 
 		// Acciones de los botones
+		btnAgregar.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				//Checar que los campos no esten vacios
+				if(tfID.getText().isEmpty() || tfNombre.getText().isEmpty() || tfPrecio.getText().isEmpty() || tfCantidad.getText().isEmpty()){
+					//Tirar error al estar algún campo vacio
+					JOptionPane.showMessageDialog(null, "Favor de llenar todos los campos pedidos", "Error al agregar el producto", JOptionPane.ERROR_MESSAGE);
+					frameAggPro.setVisible(false);
+					ventanaAggProducto();
+				}else{
+					//Obtener valores de los TextFields
+					String idProducto = tfID.getText();
+					String nombre = tfNombre.getText();
+					float precio = Float.parseFloat(tfPrecio.getText());
+					int cantidad = Integer.parseInt(tfCantidad.getText());
+
+					//Mandar a llamar el método y pasar parametros
+					aggProducto(idProducto, nombre, precio, cantidad);
+				}
+			}
+		});
+
 		btnCancelar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//Cerrar ventana
@@ -577,4 +598,42 @@ public class Inventario extends JDialog{
 		});  
 	}
 
+	private void aggProducto(String ID, String nombre, float precio, int cantidad){
+		try {
+			String qInsertarProducto = "INSERT INTO productos (idproducto, nombre, cantidad, precio)" + "VALUES (?, ?, ?, ?)";
+
+			PreparedStatement execQuery = conStatus.prepareStatement(qInsertarProducto);
+			execQuery.setString(1, ID);
+			execQuery.setString(2, nombre);
+			execQuery.setInt(3, cantidad);
+			execQuery.setFloat(4, precio);
+			execQuery.executeUpdate();
+
+			//Mostrar mensaje y cerrar ventana
+			JOptionPane.showMessageDialog(this, "Producto ingresado correctamente");
+			frameAggPro.dispose();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Error al registrar el producto. \n" + e);
+		}
+	}
+
+	private void modProducto(){
+
+	}
+
+	private void elimProducto(){
+
+	}
+
+	private void aggPelicula(){
+		
+	}
+
+	private void modPelicula(){
+
+	}
+
+	private void elimPelicula(){
+
+	}
 }

@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.*;
 
@@ -116,8 +117,8 @@ public class Usuario extends JDialog{
 		btnRegistrar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//Validar si los campos no esten vacios
-				if(tfUsuario.getText() != ""){
-					JOptionPane.showMessageDialog(null, "Favor de llenar todos los campos pedidos", "Error", JOptionPane.WARNING_MESSAGE);
+				if(tfUsuario.getText().isEmpty() || pfPassword.getText().isEmpty()){
+					JOptionPane.showMessageDialog(null, "Favor de llenar todos los campos pedidos", "Error", JOptionPane.ERROR_MESSAGE);
 					frameAgg.setVisible(false);
 					ventanaRegistro();
 				}else{
@@ -195,7 +196,7 @@ public class Usuario extends JDialog{
 		btnEliminar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//Validar si los campos no esten vacios
-				if(tfID.getText() != ""){
+				if(tfID.getText().isEmpty()){
 					JOptionPane.showMessageDialog(null, "Favor de llenar todos los campos pedidos", "Error", JOptionPane.WARNING_MESSAGE);
 					frameEliminar.setVisible(false);
 					ventanaEliminacion();
@@ -220,27 +221,42 @@ public class Usuario extends JDialog{
 
 	private void agregarUsuario(String usuario, char[] password){
 		//De los dos parametros obtenidos de la ventana de registro, hacer el query para insertarlo dentro de la BD
-
 		String passConvertido = new String(password);
 
-		try{			
-			String qInsertarUsuario = "INSERT INTO usuarios (idusuario, usuario, password)" + "VALUES (?, ?, ?)";
-            
-			PreparedStatement execQuery = conStatus.prepareStatement(qInsertarUsuario);
-			execQuery.setString(1, null);
-			execQuery.setString(2, usuario);
-			execQuery.setString(3, passConvertido);
-			execQuery.executeUpdate();
-			
-			//Mostrar que se completo la tarea y cerrar ventana
-			JOptionPane.showMessageDialog(this, "Usuario registrado correctamente");
-			frameAgg.dispose();
+		//Checar si el usuario ya existe
+		try {
+			String queryUsuarioRegistrado = "SELECT * FROM usuarios WHERE usuario= '" + usuario + "'";
+			Statement stmt = conStatus.createStatement();
+			ResultSet resultQuery = stmt.executeQuery(queryUsuarioRegistrado);
 
-			//Actualizar tabla de la ventana Cuentas
-			// ...
-        }catch(Exception aggError){
-			JOptionPane.showMessageDialog(this, "Error al registrar al usuario. \n" + aggError);
-        }
+			if(resultQuery.next()){
+				//Usuario ya existente
+				JOptionPane.showMessageDialog(this, "Usuario ingresado ya existe.", "Usuario ya existente", JOptionPane.WARNING_MESSAGE);
+			}else{
+				//Registrar al usuario
+				try{			
+					String qInsertarUsuario = "INSERT INTO usuarios (idusuario, usuario, password)" + "VALUES (?, ?, ?)";
+					
+					PreparedStatement ps = conStatus.prepareStatement(qInsertarUsuario);
+					ps.setString(1, null);
+					ps.setString(2, usuario);
+					ps.setString(3, passConvertido);
+					ps.executeUpdate();
+					
+					//Mostrar que se completo la tarea y cerrar ventana
+					JOptionPane.showMessageDialog(this, "Usuario registrado correctamente");
+					frameAgg.dispose();
+
+					//Actualizar tabla de la ventana Cuentas
+					// ...
+				}catch(Exception aggError){
+					JOptionPane.showMessageDialog(this, "Error al registrar al usuario. \n" + aggError);
+				}
+			}
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Error al registrar al usuario. \n" + e, "ERROR", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void eliminarUsuario(int ID){
