@@ -273,7 +273,7 @@ public class Usuario extends JDialog{
 
 				JOptionPane.showMessageDialog(this, "Eliminado con éxito!");
 			}else{
-
+				this.dispose();
 			}
 
 			frameEliminar.dispose();

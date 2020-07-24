@@ -31,6 +31,7 @@ public class VentanaLogin extends javax.swing.JFrame {
         pfldContrasena = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         lblTituloLogin.setFont(new java.awt.Font("SF Pro Text", 1, 13)); // NOI18N
         lblTituloLogin.setText("Sistema gestor de inventario - MULTIVIDEO");

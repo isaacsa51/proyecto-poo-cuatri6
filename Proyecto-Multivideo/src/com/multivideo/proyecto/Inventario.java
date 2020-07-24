@@ -5,6 +5,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -184,18 +188,24 @@ public class Inventario extends JDialog{
 		grid.gridx = 1;
 		grid.gridy = 0;
 
-		String years[] = { "1995", "1996", "1997", "1998", 
-							"1999", "2000", "2001", "2002", 
-							"2003", "2004", "2005", "2006", 
-							"2007", "2008", "2009", "2010", 
-							"2011", "2012", "2013", "2014", 
-							"2015", "2016", "2017", "2018", 
-							"2019" };
-
-		JComboBox lstProductos = new JComboBox(years); 
+		JComboBox lstProductos = new JComboBox(); 
 		panel.add(lstProductos, grid);
 		grid.gridx = 0;
 		grid.gridy = 0;
+
+		//Obtener información de la BD
+		try{
+			String queryProductos = "SELECT * FROM productos";
+			Statement stmt = conStatus.createStatement();
+			ResultSet resultQuery = stmt.executeQuery(queryProductos);
+
+			while(resultQuery.next()){
+				String producto = resultQuery.getString("nombre");
+				lstProductos.addItem(producto);
+			}
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null, e);
+		}
 
 		JLabel lblCantidad = new JLabel("Cantidad a ingresar del producto: ");
 		grid.gridx = 0; //0
@@ -228,6 +238,26 @@ public class Inventario extends JDialog{
 		panel.add(btnCancelar, grid);
 
 		// Acciones de los botones
+		btnModificar.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				//Checar si hay campos vacios
+				if(tfCantidad.getText().isEmpty() || tfPrecio.getText().isEmpty()){
+					//Tirar error al estar algún campo vacio
+					JOptionPane.showMessageDialog(null, "Favor de llenar todos los campos pedidos", "Error al modificar el producto", JOptionPane.ERROR_MESSAGE);
+					frameModPro.setVisible(false);
+					ventanaModProducto();
+				}else{
+					//Obtener valores de los TextFields
+					Object producto = lstProductos.getSelectedItem();
+					int cantidad = Integer.parseInt(tfCantidad.getText());
+					float precio = Float.parseFloat(tfPrecio.getText());
+
+					//Mandar a llamar el método y pasar parametros
+					modProducto(producto, cantidad, precio);
+				}
+			}
+		});
+
 		btnCancelar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//Cerrar ventana
@@ -279,18 +309,24 @@ public class Inventario extends JDialog{
 		grid.gridx = 1;
 		grid.gridy = 0;
 
-		String years[] = { "1995", "1996", "1997", "1998", 
-							"1999", "2000", "2001", "2002", 
-							"2003", "2004", "2005", "2006", 
-							"2007", "2008", "2009", "2010", 
-							"2011", "2012", "2013", "2014", 
-							"2015", "2016", "2017", "2018", 
-							"2019" };
-
-		JComboBox lstProductos = new JComboBox(years); 
+		JComboBox lstProductos = new JComboBox(); 
 		panel.add(lstProductos, grid);
 		grid.gridx = 0;
 		grid.gridy = 0;
+
+		//Obtener información de la BD
+		try{
+			String queryProductos = "SELECT * FROM productos";
+			Statement stmt = conStatus.createStatement();
+			ResultSet resultQuery = stmt.executeQuery(queryProductos);
+
+			while(resultQuery.next()){
+				String producto = resultQuery.getString("nombre");
+				lstProductos.addItem(producto);
+			}
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null, e);
+		}
 
 		//Botones
 		JButton btnEliminar = new JButton("Eliminar");
@@ -305,6 +341,14 @@ public class Inventario extends JDialog{
 		panel.add(btnCancelar, grid);
 
 		// Acciones de los botones
+		btnEliminar.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				//Llamar el metodo
+				Object producto = lstProductos.getSelectedItem();
+				elimProducto(producto);
+			}
+		});
+
 		btnCancelar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//Cerrar ventana
@@ -599,30 +643,82 @@ public class Inventario extends JDialog{
 	}
 
 	private void aggProducto(String ID, String nombre, float precio, int cantidad){
-		try {
-			String qInsertarProducto = "INSERT INTO productos (idproducto, nombre, cantidad, precio)" + "VALUES (?, ?, ?, ?)";
 
-			PreparedStatement execQuery = conStatus.prepareStatement(qInsertarProducto);
-			execQuery.setString(1, ID);
-			execQuery.setString(2, nombre);
-			execQuery.setInt(3, cantidad);
-			execQuery.setFloat(4, precio);
-			execQuery.executeUpdate();
+		//Checar si el ID ya existe
+		try{
+			String queryCheckID = "SELECT * FROM productos WHERE idproducto = '" + ID + "'";
+			Statement stmt = conStatus.createStatement();
+			ResultSet resultQuery = stmt.executeQuery(queryCheckID);
 
-			//Mostrar mensaje y cerrar ventana
-			JOptionPane.showMessageDialog(this, "Producto ingresado correctamente");
-			frameAggPro.dispose();
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Error al registrar el producto. \n" + e);
+			if(resultQuery.next()){
+				//ID del producto ya existente
+				JOptionPane.showMessageDialog(this, "El ID del producto a agregar ya existe.", "ID ya existente", JOptionPane.WARNING_MESSAGE);
+			}else{
+				//Agregar producto
+				try {
+					String qInsertarProducto = "INSERT INTO productos (idproducto, nombre, cantidad, precio)" + "VALUES (?, ?, ?, ?)";
+
+					PreparedStatement execQuery = conStatus.prepareStatement(qInsertarProducto);
+					execQuery.setString(1, ID);
+					execQuery.setString(2, nombre);
+					execQuery.setInt(3, cantidad);
+					execQuery.setFloat(4, precio);
+					execQuery.executeUpdate();
+
+					//Mostrar mensaje y cerrar ventana
+					JOptionPane.showMessageDialog(this, "Producto ingresado correctamente");
+					frameAggPro.dispose();
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(this, "Error al registrar el producto. \n" + e);
+				}
+			}
+		}catch(Exception aggError){
+			JOptionPane.showMessageDialog(this, "Error al agregar el producto. \n" + aggError);
 		}
 	}
 
-	private void modProducto(){
+	private void modProducto(Object producto, int cantidadAgg, float precio){
+		String productoString = String.valueOf(producto);
+		
+		//Modificar el producto
+		try {
+			String queryModificarPro = "UPDATE productos SET cantidad = ? , " + "precio = ? " + "WHERE nombre = ?";
 
+			PreparedStatement execQuery = conStatus.prepareStatement(queryModificarPro);
+			execQuery.setInt(1, cantidadAgg);
+			execQuery.setFloat(2, precio);
+			execQuery.setString(3, productoString);
+
+			execQuery.executeUpdate();
+
+		} catch (SQLException errorMod) {
+			JOptionPane.showMessageDialog(null, "Error al modificar el producto. \n" + errorMod, "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
-	private void elimProducto(){
+	private void elimProducto(Object producto){
+		String productoString = String.valueOf(producto);
 
+		try {
+			String queryElimProducto = "DELETE FROM productos WHERE nombre = ?";
+			PreparedStatement execQuery = null;
+
+			//Confirmar acción
+			int resp = JOptionPane.showConfirmDialog(null, "¿Está seguro?");
+
+			if(resp == 0){
+				execQuery = conStatus.prepareStatement(queryElimProducto);
+				execQuery.setString(1, productoString); 
+				execQuery.executeUpdate();
+
+				JOptionPane.showMessageDialog(this, "Eliminado con éxito!");
+			}else{
+				this.dispose();
+			}
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Error al querer eliminar el producto seleccioando. \n" + e, "Error al eliminar", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void aggPelicula(){
