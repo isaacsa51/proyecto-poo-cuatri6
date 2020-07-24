@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -18,7 +17,7 @@ public class Inventario extends JDialog{
 	ConexionBD bdcon = new ConexionBD();
 	Connection conStatus = bdcon.connBD;
 	
-	//Ventanas
+	//Ventanas en sección Stock
 	JFrame frameAggPro = new JFrame();
 	JFrame frameModPro = new JFrame();
 	JFrame frameElimPro = new JFrame();
@@ -453,6 +452,28 @@ public class Inventario extends JDialog{
 		panel.add(btnCancelar, grid);
 
 		// Acciones de los botones
+		btnAgregar.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				//Checar que los campos no esten vacios
+				if(tfID.getText().isEmpty() || tfNombre.getText().isEmpty() || tfGenero.getText().isEmpty() || tfPrecio.getText().isEmpty() || tfCantidad.getText().isEmpty()){
+					//Tirar error al estar algún campo vacio
+					JOptionPane.showMessageDialog(null, "Favor de llenar todos los campos pedidos", "Error al agregar la pelicula", JOptionPane.ERROR_MESSAGE);
+					frameAggPel.setVisible(false);
+					ventanaAggPelicula();
+				}else{
+					//Obtener valores de los TextFields
+					String idProducto = tfID.getText();
+					String nombre = tfNombre.getText();
+					String genero = tfGenero.getText();
+					float precio = Float.parseFloat(tfPrecio.getText());
+					int cantidad = Integer.parseInt(tfCantidad.getText());
+
+					//Mandar a llamar el método y pasar parametros
+					aggPelicula(idProducto, nombre, genero, cantidad, precio);
+				}
+			}
+		});
+
 		btnCancelar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//Cerrar ventana
@@ -504,18 +525,24 @@ public class Inventario extends JDialog{
 		grid.gridx = 1;
 		grid.gridy = 0;
 
-		String years[] = { "1995", "1996", "1997", "1998", 
-							"1999", "2000", "2001", "2002", 
-							"2003", "2004", "2005", "2006", 
-							"2007", "2008", "2009", "2010", 
-							"2011", "2012", "2013", "2014", 
-							"2015", "2016", "2017", "2018", 
-							"2019" };
-
-		JComboBox lstProductos = new JComboBox(years); 
-		panel.add(lstProductos, grid);
+		JComboBox lstPeliculas = new JComboBox(); 
+		panel.add(lstPeliculas, grid);
 		grid.gridx = 0;
 		grid.gridy = 0;
+
+		//Obtener información de la BD
+		try{
+			String queryPeliculas = "SELECT * FROM peliculas";
+			Statement stmt = conStatus.createStatement();
+			ResultSet resultQuery = stmt.executeQuery(queryPeliculas);
+
+			while(resultQuery.next()){
+				String pelicula = resultQuery.getString("nombre");
+				lstPeliculas.addItem(pelicula);
+			}
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null, e);
+		}
 
 		JLabel lblGenero = new JLabel("Genero: ");
 		grid.gridx = 0; //0
@@ -557,6 +584,27 @@ public class Inventario extends JDialog{
 		panel.add(btnCancelar, grid);
 
 		// Acciones de los botones
+		btnModificar.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				//Checar si hay campos vacios
+				if(tfGenero.getText().isEmpty() || tfCantidad.getText().isEmpty() || tfPrecio.getText().isEmpty()){
+					//Tirar error al estar algún campo vacio
+					JOptionPane.showMessageDialog(null, "Favor de llenar todos los campos pedidos", "Error al modificar la pelicula", JOptionPane.ERROR_MESSAGE);
+					frameModPel.setVisible(false);
+					ventanaModPelicula();
+				}else{
+					//Obtener valores de los TextFields
+					Object pelicula = lstPeliculas.getSelectedItem();
+					String genero = tfGenero.getText();
+					int cantidad = Integer.parseInt(tfCantidad.getText());
+					float precio = Float.parseFloat(tfPrecio.getText());
+
+					//Mandar a llamar el método y pasar parametros
+					modPelicula(pelicula, genero, cantidad, precio);
+				}
+			}
+		});
+
 		btnCancelar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//Cerrar ventana
@@ -608,18 +656,24 @@ public class Inventario extends JDialog{
 		grid.gridx = 1;
 		grid.gridy = 0;
 
-		String years[] = { "1995", "1996", "1997", "1998", 
-							"1999", "2000", "2001", "2002", 
-							"2003", "2004", "2005", "2006", 
-							"2007", "2008", "2009", "2010", 
-							"2011", "2012", "2013", "2014", 
-							"2015", "2016", "2017", "2018", 
-							"2019" };
-
-		JComboBox lstPeliculas = new JComboBox(years); 
+		JComboBox lstPeliculas = new JComboBox(); 
 		panel.add(lstPeliculas, grid);
 		grid.gridx = 0;
 		grid.gridy = 0;
+
+		//Obtener información de la BD
+		try{
+			String queryPeliculas = "SELECT * FROM peliculas";
+			Statement stmt = conStatus.createStatement();
+			ResultSet resultQuery = stmt.executeQuery(queryPeliculas);
+
+			while(resultQuery.next()){
+				String producto = resultQuery.getString("nombre");
+				lstPeliculas.addItem(producto);
+			}
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null, e);
+		}
 
 		//Botones
 		JButton btnEliminar = new JButton("Eliminar");
@@ -634,6 +688,14 @@ public class Inventario extends JDialog{
 		panel.add(btnCancelar, grid);
 
 		// Acciones de los botones
+		btnEliminar.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				//Llamar el metodo
+				Object pelicula = lstPeliculas.getSelectedItem();
+				elimPelicula(pelicula);
+			}
+		});
+
 		btnCancelar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//Cerrar ventana
@@ -691,6 +753,8 @@ public class Inventario extends JDialog{
 
 			execQuery.executeUpdate();
 
+			//Mostrar mensaje
+			JOptionPane.showMessageDialog(null, "Producto modificado con éxito!");
 		} catch (SQLException errorMod) {
 			JOptionPane.showMessageDialog(null, "Error al modificar el producto. \n" + errorMod, "Error", JOptionPane.ERROR_MESSAGE);
 		}
@@ -721,15 +785,84 @@ public class Inventario extends JDialog{
 		}
 	}
 
-	private void aggPelicula(){
-		
+	private void aggPelicula(String ID, String nombre, String genero, int cantidad, float precio){
+		//Checar si el ID ya existe
+		try{
+			String queryCheckID = "SELECT * FROM peliculas WHERE idpelicula = '" + ID + "'";
+			Statement stmt = conStatus.createStatement();
+			ResultSet resultQuery = stmt.executeQuery(queryCheckID);
+
+			if(resultQuery.next()){
+				//ID del producto ya existente
+				JOptionPane.showMessageDialog(this, "El ID de la pelicula a agregar ya existe.", "ID ya existente", JOptionPane.WARNING_MESSAGE);
+			}else{
+				//Agregar producto
+				try {
+					String queryAggPelicula = "INSERT INTO peliculas (idpelicula, nombre, genero, precio, stock)" + "VALUES (?, ?, ?, ?, ?)";
+
+					PreparedStatement execQuery = conStatus.prepareStatement(queryAggPelicula);
+					execQuery.setString(1, ID);
+					execQuery.setString(2, nombre);
+					execQuery.setString(3, genero);
+					execQuery.setFloat(4, precio);
+					execQuery.setInt(5, cantidad);
+					execQuery.executeUpdate();
+
+					//Mostrar mensaje y cerrar ventana
+					JOptionPane.showMessageDialog(this, "Pelicula agregada correctamente");
+					frameAggPel.dispose();
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(this, "Error al registrar el producto. \n" + e);
+				}
+			}
+		}catch(Exception aggError){
+			JOptionPane.showMessageDialog(this, "Error al agregar la pelicula. \n" + aggError);
+		}
 	}
 
-	private void modPelicula(){
+	private void modPelicula(Object pelicula, String genero, int cantidad, float precio){
+		String peliculaString = String.valueOf(pelicula);
 
+		//Modificar la pelicula
+		try{
+			String queryModificar = "UPDATE peliculas SET genero = ?, " + "stock = ?" + ", precio = ?" + "WHERE nombre = ?";
+
+			PreparedStatement execQuery = conStatus.prepareStatement(queryModificar);
+			execQuery.setString(1, genero);
+			execQuery.setInt(2, cantidad);
+			execQuery.setFloat(3, precio);
+			execQuery.setString(4, peliculaString);
+			execQuery.executeUpdate();
+
+			//Mostrar mensaje
+			JOptionPane.showMessageDialog(null, "Producto modificado con éxito!");
+		}catch(SQLException error){
+			JOptionPane.showMessageDialog(null, "Error al modificar la pelicula. \n" + error, "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
-	private void elimPelicula(){
+	private void elimPelicula(Object pelicula){
+		String peliculaString = String.valueOf(pelicula);
 
+		try {
+			String queryEliminar = "DELETE FROM peliculas WHERE nombre = ?";
+			PreparedStatement execQuery = null;
+
+			//Confirmar acción
+			int resp = JOptionPane.showConfirmDialog(null, "¿Está seguro?");
+
+			if(resp == 0){
+				execQuery = conStatus.prepareStatement(queryEliminar);
+				execQuery.setString(1, peliculaString); 
+				execQuery.executeUpdate();
+
+				JOptionPane.showMessageDialog(this, "Eliminado con éxito!");
+			}else{
+				this.dispose();
+			}
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Error al querer eliminar la pelicula seleccionada. \n" + e, "Error al eliminar", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }
