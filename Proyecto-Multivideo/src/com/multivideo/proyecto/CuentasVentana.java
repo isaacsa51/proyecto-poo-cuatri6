@@ -43,6 +43,9 @@ public class CuentasVentana extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
+        }finally{
+            if(bdcon != null)
+                bdcon.desconectarBD();
         }
     }
 

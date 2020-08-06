@@ -44,7 +44,10 @@ public class Usuario extends JDialog{
 
 		}catch(SQLException e){
 			e.printStackTrace();
-		}
+		}finally{
+            if(bdcon != null)
+                bdcon.desconectarBD();
+        }
 
 		return 0;
 	}
@@ -282,6 +285,9 @@ public class Usuario extends JDialog{
 			// ...
 		}catch(Exception elimError){
 			JOptionPane.showMessageDialog(this, "Error al eliminar el usuario.\n" + elimError, "Error", JOptionPane.WARNING_MESSAGE);
-		}
+		}finally{
+            if(bdcon != null)
+                bdcon.desconectarBD();
+        }
 	}
 }

@@ -30,11 +30,10 @@ public class ConexionBD {
                     stnt.close();
                     conn.close();
                 }*/
-
             }
             
         }catch(ClassNotFoundException | SQLException errorBD){
-            System.out.print("Error al intentar conectarse a la base de datos\n\n" + errorBD);
+            System.out.print("PRUEBA\n\n" + errorBD);
         }
     }
 

@@ -71,6 +71,9 @@ public class ReportesMod {
         }
         catch(SQLException e){
             e.printStackTrace();
+        }finally{
+            if(bdcon != null)
+                bdcon.desconectarBD();
         }
     }
     

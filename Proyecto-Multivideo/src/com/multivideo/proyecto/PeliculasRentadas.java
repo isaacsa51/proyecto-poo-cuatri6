@@ -321,6 +321,9 @@ public class PeliculasRentadas extends javax.swing.JFrame {
             
         }catch(Exception e){
             JOptionPane.showMessageDialog(this, e);
+        }finally{
+            if(bdcon != null)
+                bdcon.desconectarBD();
         }
     }//GEN-LAST:event_btnPelisDisponiblesActionPerformed
 
