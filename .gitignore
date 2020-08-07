@@ -1,3 +1,7 @@
 /Proyecto-POO/target/
 /Proyecto-Multivideo/.vscode/
 /Practica13/nbproject/private/
+.idea/.gitignore
+.idea/
+Proyecto-Multivideo/output/production/proyecto-poo-cuatri6/com/multivideo/proyecto/ConexionBD.class
+Proyecto-Multivideo/output/

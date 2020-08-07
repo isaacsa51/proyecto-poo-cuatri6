@@ -12,7 +12,7 @@ import javax.swing.*;
 
 public class Usuario extends JDialog{
 	//Conexión con BD mediado con un Singleton
-	Connection conn = ConexionBD.getConnection();
+	Connection conn = ConexionBD.getInstance().getConnection();
 
 	// ConexionBD conn = ConexionBD.getInstance();
 	// Connection estadoBD = conn.connBD;
