@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 public class PeliculasRentadas extends javax.swing.JFrame {
     //Conexión con BD mediado con un Singleton
-    Connection conn = ConexionBD.getConnection();
+    Connection conn = ConexionBD.getInstance().getConnection();
 
     public PeliculasRentadas() {
         initComponents();

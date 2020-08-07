@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class CuentasVentana extends javax.swing.JFrame {
     //Conexión con BD mediado con un Singleton
-    Connection conn = ConexionBD.getConnection();
+    Connection conn = ConexionBD.getInstance().getConnection();
 
     Usuario accionesUsuarios = new Usuario();
 

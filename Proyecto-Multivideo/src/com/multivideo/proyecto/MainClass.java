@@ -4,9 +4,10 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 
 public class MainClass {
+
     public static void main(String[] args) {
         //Conexión con BD mediado con un Singleton
-        Connection conn = ConexionBD.getConnection();
+        Connection conn = ConexionBD.getInstance().getConnection();
 
         //Instanciar objeto ConexionBD
         //ConexionBD bdcon = new ConexionBD();

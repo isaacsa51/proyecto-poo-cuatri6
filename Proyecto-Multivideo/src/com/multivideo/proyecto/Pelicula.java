@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class Pelicula {
 	//Conexión con BD mediado con un Singleton
-    Connection conn = ConexionBD.getConnection();
+    Connection conn = ConexionBD.getInstance().getConnection();
 
     InicioApp ventanaPrincipal = new InicioApp();
 

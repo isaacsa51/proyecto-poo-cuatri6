@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 public class ReportesMod {
     
     //Conexión con BD mediado con un Singleton
-    Connection conn = ConexionBD.getConnection();
+    Connection conn = ConexionBD.getInstance().getConnection();
     Reportes vista;
     
     public ReportesMod(Reportes vist){

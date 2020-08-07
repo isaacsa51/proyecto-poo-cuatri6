@@ -14,7 +14,7 @@ import javax.swing.border.LineBorder;
 
 public class Inventario extends JDialog{
 	//Conexión con BD mediado con un Singleton
-	Connection conn = ConexionBD.getConnection();
+	Connection conn = ConexionBD.getInstance().getConnection();
 	
 	//Ventanas en sección Stock
 	JFrame frameAggPro = new JFrame();

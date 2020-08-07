@@ -5,39 +5,41 @@ import java.sql.*;
 
 public class ConexionBD {
 
+    //Estas son constantes, declaralas como constantes...
+    private static final String SQL_DRIVER_URL = "jdbc:mysql://localhost:3306/multivideo?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static final String DRIVER_CLASSNAME = "com.mysql.cj.jdbc.Driver";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "";
 
-    // Propiedades
-    private static Connection conn = null;
+    private static ConexionBD conexionBD = null;
+    private Connection connection;
  
     // Constructor
     private ConexionBD(){
- 
-        String url = "jdbc:mysql://localhost:3306/multivideo?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String usuario = "root";
-        String password = "";
-        
         try{
-            Class.forName(driver);
-            conn = DriverManager.getConnection(url, usuario, password);
+            Class.forName(DRIVER_CLASSNAME);
+            connection = DriverManager.getConnection(SQL_DRIVER_URL, USERNAME, PASSWORD);
             System.out.println("Conectado!");
         }catch(ClassNotFoundException | SQLException e){
             e.printStackTrace();
         }
     } // Fin constructor
-    
-    // Métodos
-    public static Connection getConnection(){
-        if (conn == null){
-            new ConexionBD();
+
+    public static synchronized ConexionBD getInstance() { //synchronized es muy importante, evita que si varios hilos quieren obtener la instancia hagan lo que se llama "racing condition"
+        if(conexionBD == null) {
+            conexionBD = new ConexionBD();//Fijate como asigno el valor, nunca se hacen "news al aire sin asignacion, es una mala practica, estas construyendo objeto agarras inmediatamente la referencia de ese objeto..."
         }
-        
-        return conn;
+        return conexionBD;//Fijate como se devuelve a si mismo, y tiene control de la creacion puesto que el constructor es privado...
     }
 
-    public static void cerrarConexion() throws SQLException {
-        if (conn != null){
-            conn.close();
+    // Métodos
+    public Connection getConnection() {//Este ya nomas va a ser unico porque todo este objeto[ConexionBD] es "singleton"(solo uno en todo el ciclo de vida de la app...)
+        return connection;
+    }
+
+    public void closeConexion() throws SQLException {//O usas ingles o usas español, pero no combines... getConnection/cerrarConexion...
+        if (connection != null && !connection.isClosed()) {//Siempre hay que verificar que la conexion no este cerrada ya... si intentas cerrar una conexion ya cerrada, truena...
+            connection.close();
         }
     }
 
