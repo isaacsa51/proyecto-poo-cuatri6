@@ -13,9 +13,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 public class Inventario extends JDialog{
-	// Instanciar BD
-	ConexionBD bdcon = new ConexionBD();
-	Connection conStatus = bdcon.connBD;
+	//Conexión con BD mediado con un Singleton
+	Connection conn = ConexionBD.getConnection();
 	
 	//Ventanas en sección Stock
 	JFrame frameAggPro = new JFrame();
@@ -195,7 +194,7 @@ public class Inventario extends JDialog{
 		//Obtener información de la BD
 		try{
 			String queryProductos = "SELECT * FROM productos";
-			Statement stmt = conStatus.createStatement();
+			Statement stmt = conn.createStatement();
 			ResultSet resultQuery = stmt.executeQuery(queryProductos);
 
 			while(resultQuery.next()){
@@ -316,7 +315,7 @@ public class Inventario extends JDialog{
 		//Obtener información de la BD
 		try{
 			String queryProductos = "SELECT * FROM productos";
-			Statement stmt = conStatus.createStatement();
+			Statement stmt = conn.createStatement();
 			ResultSet resultQuery = stmt.executeQuery(queryProductos);
 
 			while(resultQuery.next()){
@@ -533,7 +532,7 @@ public class Inventario extends JDialog{
 		//Obtener información de la BD
 		try{
 			String queryPeliculas = "SELECT * FROM peliculas";
-			Statement stmt = conStatus.createStatement();
+			Statement stmt = conn.createStatement();
 			ResultSet resultQuery = stmt.executeQuery(queryPeliculas);
 
 			while(resultQuery.next()){
@@ -664,7 +663,7 @@ public class Inventario extends JDialog{
 		//Obtener información de la BD
 		try{
 			String queryPeliculas = "SELECT * FROM peliculas";
-			Statement stmt = conStatus.createStatement();
+			Statement stmt = conn.createStatement();
 			ResultSet resultQuery = stmt.executeQuery(queryPeliculas);
 
 			while(resultQuery.next()){
@@ -709,7 +708,7 @@ public class Inventario extends JDialog{
 		//Checar si el ID ya existe
 		try{
 			String queryCheckID = "SELECT * FROM productos WHERE idproducto = '" + ID + "'";
-			Statement stmt = conStatus.createStatement();
+			Statement stmt = conn.createStatement();
 			ResultSet resultQuery = stmt.executeQuery(queryCheckID);
 
 			if(resultQuery.next()){
@@ -720,7 +719,7 @@ public class Inventario extends JDialog{
 				try {
 					String qInsertarProducto = "INSERT INTO productos (idproducto, nombre, cantidad, precio)" + "VALUES (?, ?, ?, ?)";
 
-					PreparedStatement execQuery = conStatus.prepareStatement(qInsertarProducto);
+					PreparedStatement execQuery = conn.prepareStatement(qInsertarProducto);
 					execQuery.setString(1, ID);
 					execQuery.setString(2, nombre);
 					execQuery.setInt(3, cantidad);
@@ -746,7 +745,7 @@ public class Inventario extends JDialog{
 		try {
 			String queryModificarPro = "UPDATE productos SET cantidad = ? , " + "precio = ? " + "WHERE nombre = ?";
 
-			PreparedStatement execQuery = conStatus.prepareStatement(queryModificarPro);
+			PreparedStatement execQuery = conn.prepareStatement(queryModificarPro);
 			execQuery.setInt(1, cantidadAgg);
 			execQuery.setFloat(2, precio);
 			execQuery.setString(3, productoString);
@@ -771,7 +770,7 @@ public class Inventario extends JDialog{
 			int resp = JOptionPane.showConfirmDialog(null, "¿Está seguro?");
 
 			if(resp == 0){
-				execQuery = conStatus.prepareStatement(queryElimProducto);
+				execQuery = conn.prepareStatement(queryElimProducto);
 				execQuery.setString(1, productoString); 
 				execQuery.executeUpdate();
 
@@ -789,7 +788,7 @@ public class Inventario extends JDialog{
 		//Checar si el ID ya existe
 		try{
 			String queryCheckID = "SELECT * FROM peliculas WHERE idpelicula = '" + ID + "'";
-			Statement stmt = conStatus.createStatement();
+			Statement stmt = conn.createStatement();
 			ResultSet resultQuery = stmt.executeQuery(queryCheckID);
 
 			if(resultQuery.next()){
@@ -800,7 +799,7 @@ public class Inventario extends JDialog{
 				try {
 					String queryAggPelicula = "INSERT INTO peliculas (idpelicula, nombre, genero, precio, stock)" + "VALUES (?, ?, ?, ?, ?)";
 
-					PreparedStatement execQuery = conStatus.prepareStatement(queryAggPelicula);
+					PreparedStatement execQuery = conn.prepareStatement(queryAggPelicula);
 					execQuery.setString(1, ID);
 					execQuery.setString(2, nombre);
 					execQuery.setString(3, genero);
@@ -827,7 +826,7 @@ public class Inventario extends JDialog{
 		try{
 			String queryModificar = "UPDATE peliculas SET genero = ?, " + "stock = ?" + ", precio = ?" + "WHERE nombre = ?";
 
-			PreparedStatement execQuery = conStatus.prepareStatement(queryModificar);
+			PreparedStatement execQuery = conn.prepareStatement(queryModificar);
 			execQuery.setString(1, genero);
 			execQuery.setInt(2, cantidad);
 			execQuery.setFloat(3, precio);
@@ -852,7 +851,7 @@ public class Inventario extends JDialog{
 			int resp = JOptionPane.showConfirmDialog(null, "¿Está seguro?");
 
 			if(resp == 0){
-				execQuery = conStatus.prepareStatement(queryEliminar);
+				execQuery = conn.prepareStatement(queryEliminar);
 				execQuery.setString(1, peliculaString); 
 				execQuery.executeUpdate();
 

@@ -16,10 +16,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 public class CuentasVentana extends javax.swing.JFrame {
-
-    // Instanciar conexión
-    ConexionBD bdcon = new ConexionBD();
-    Connection conStatus = bdcon.connBD;
+    //Conexión con BD mediado con un Singleton
+    Connection conn = ConexionBD.getConnection();
 
     Usuario accionesUsuarios = new Usuario();
 
@@ -28,7 +26,7 @@ public class CuentasVentana extends javax.swing.JFrame {
         try {
             String qBuscarUsuarios = "SELECT * FROM usuarios";
 
-            PreparedStatement execQuery = conStatus.prepareStatement(qBuscarUsuarios);
+            PreparedStatement execQuery = conn.prepareStatement(qBuscarUsuarios);
             ResultSet resQuery = execQuery.executeQuery();
 
             DefaultTableModel tablaUsuarios = (DefaultTableModel) tblUsuarios.getModel();
@@ -43,9 +41,6 @@ public class CuentasVentana extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
-        }finally{
-            if(bdcon != null)
-                bdcon.desconectarBD();
         }
     }
 

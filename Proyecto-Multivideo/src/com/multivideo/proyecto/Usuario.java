@@ -11,8 +11,11 @@ import java.sql.Statement;
 import javax.swing.*;
 
 public class Usuario extends JDialog{
-	ConexionBD bdcon = new ConexionBD();
-	Connection conStatus = bdcon.connBD;
+	//Conexión con BD mediado con un Singleton
+	Connection conn = ConexionBD.getConnection();
+
+	// ConexionBD conn = ConexionBD.getInstance();
+	// Connection estadoBD = conn.connBD;
 
 	//Ventanas
 	JFrame frameAgg = new JFrame();
@@ -22,7 +25,7 @@ public class Usuario extends JDialog{
         try {
 			String loginQuery = "SELECT * FROM usuarios WHERE usuario=? AND password=?";
 
-			PreparedStatement execQuery = conStatus.prepareStatement(loginQuery);
+			PreparedStatement execQuery = conn.prepareStatement(loginQuery);
 			
 			execQuery.setString(1, usuario);
 			execQuery.setString(2, password);
@@ -44,10 +47,7 @@ public class Usuario extends JDialog{
 
 		}catch(SQLException e){
 			e.printStackTrace();
-		}finally{
-            if(bdcon != null)
-                bdcon.desconectarBD();
-        }
+		}
 
 		return 0;
 	}
@@ -229,7 +229,7 @@ public class Usuario extends JDialog{
 		//Checar si el usuario ya existe
 		try {
 			String queryUsuarioRegistrado = "SELECT * FROM usuarios WHERE usuario= '" + usuario + "'";
-			Statement stmt = conStatus.createStatement();
+			Statement stmt = conn.createStatement();
 			ResultSet resultQuery = stmt.executeQuery(queryUsuarioRegistrado);
 
 			if(resultQuery.next()){
@@ -240,7 +240,7 @@ public class Usuario extends JDialog{
 				try{			
 					String qInsertarUsuario = "INSERT INTO usuarios (idusuario, usuario, password)" + "VALUES (?, ?, ?)";
 					
-					PreparedStatement ps = conStatus.prepareStatement(qInsertarUsuario);
+					PreparedStatement ps = conn.prepareStatement(qInsertarUsuario);
 					ps.setString(1, null);
 					ps.setString(2, usuario);
 					ps.setString(3, passConvertido);
@@ -270,7 +270,7 @@ public class Usuario extends JDialog{
 			int resp = JOptionPane.showConfirmDialog(null, "¿Está seguro?");
 
 			if(resp == 0){
-				execQuery = conStatus.prepareStatement(qEliminar);
+				execQuery = conn.prepareStatement(qEliminar);
 				execQuery.setInt(1, ID); 
 				execQuery.executeUpdate();
 
@@ -285,9 +285,6 @@ public class Usuario extends JDialog{
 			// ...
 		}catch(Exception elimError){
 			JOptionPane.showMessageDialog(this, "Error al eliminar el usuario.\n" + elimError, "Error", JOptionPane.WARNING_MESSAGE);
-		}finally{
-            if(bdcon != null)
-                bdcon.desconectarBD();
-        }
+		}
 	}
 }

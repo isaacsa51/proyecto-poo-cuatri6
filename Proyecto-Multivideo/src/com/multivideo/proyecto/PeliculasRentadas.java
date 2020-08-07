@@ -11,10 +11,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 public class PeliculasRentadas extends javax.swing.JFrame {
-    
-    //Conexión hacia la bd
-    ConexionBD bdcon = new ConexionBD();
-    Connection conStatus = bdcon.connBD;
+    //Conexión con BD mediado con un Singleton
+    Connection conn = ConexionBD.getConnection();
 
     public PeliculasRentadas() {
         initComponents();
@@ -309,7 +307,7 @@ public class PeliculasRentadas extends javax.swing.JFrame {
 
             DefaultListModel listaPelis = new DefaultListModel();
             
-            PreparedStatement execQuery = conStatus.prepareStatement(qMostrarPelis);
+            PreparedStatement execQuery = conn.prepareStatement(qMostrarPelis);
             ResultSet resQuery = execQuery.executeQuery();
 
             //Ir atraves de la tabla e insertar la información
@@ -321,9 +319,6 @@ public class PeliculasRentadas extends javax.swing.JFrame {
             
         }catch(Exception e){
             JOptionPane.showMessageDialog(this, e);
-        }finally{
-            if(bdcon != null)
-                bdcon.desconectarBD();
         }
     }//GEN-LAST:event_btnPelisDisponiblesActionPerformed
 

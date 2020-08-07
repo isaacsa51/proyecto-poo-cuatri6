@@ -3,65 +3,57 @@ package com.multivideo.proyecto;
 import java.sql.*;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class Pelicula {
-	ConexionBD bdcon = new ConexionBD();
-	Connection conStatus = bdcon.connBD;
-	
-	InicioApp ventanaPrincipal = new InicioApp(); 
+	//Conexión con BD mediado con un Singleton
+    Connection conn = ConexionBD.getConnection();
+
+    InicioApp ventanaPrincipal = new InicioApp();
 
 	//Métodos
-	protected void mostrarPeliculasLista(){
-        try{
-            String qBuscarPeliculas = "SELECT * FROM peliculas";
-
-            PreparedStatement execQuery = conStatus.prepareStatement(qBuscarPeliculas);
-            ResultSet resQuery = execQuery.executeQuery();
-
-            DefaultListModel listaPeliculas = new DefaultListModel();
-            
-            while (resQuery.next()) {
-                String pelicula = resQuery.getString("nombre");
-
-                //Agregar elemento
-                listaPeliculas.addElement(pelicula);
-            }
-
-            ventanaPrincipal.lstPeliculas.setModel(listaPeliculas);
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        }finally{
-            if(bdcon != null)
-                bdcon.desconectarBD();
-        }
-    }
-
-    protected void mostrarProductosLista(){
-        try{
-            String qBuscarProductos = "SELECT * FROM productos";
-
-            PreparedStatement execQuery = conStatus.prepareStatement(qBuscarProductos);
-            ResultSet resQuery = execQuery.executeQuery();
-
-            DefaultListModel listaProductos = new DefaultListModel();
-
-            while(resQuery.next()){
-                String producto = resQuery.getString("nombre");
-
-                //Agregar elemento
-                listaProductos.addElement(producto);
-            }
-
-            ventanaPrincipal.lstProductos.setModel(listaProductos);
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        }finally{
-            if(bdcon != null)
-                bdcon.desconectarBD();
-        }
-    } 
-
     protected void checarDisponibilidad(String producto, int cantidad){
-		
+        try { 
+			String qChecarDisponibilidad = "SELECT nombre FROM peliculas WHERE nombre = ? AND stock > 0";
+
+			PreparedStatement execQuery = conn.prepareStatement(qChecarDisponibilidad);
+			
+			execQuery.setString(1, producto);
+			ResultSet resultQuery = execQuery.executeQuery();
+
+            DefaultTableModel tablaTotal = (DefaultTableModel) ventanaPrincipal.tblTotal.getModel();
+            tablaTotal.setRowCount(0);
+
+            //Poner información del producto a la tabla
+            while(resultQuery.next()){
+                Object PeliculaSeleccionada[] =  {
+                    producto,
+                    cantidad
+                    //resultQuery.getFloat("Precio")
+                };
+
+                // Poner información sacada en cada columna de la tabla
+                tablaTotal.addRow(PeliculaSeleccionada);
+            }
+
+			// //Checar disponibilidad
+			// if(resultQuery.next()){
+            //     //Poner información del producto a la tabla
+            //     while(resultQuery.next()){
+            //         Object PeliculaSeleccionada[] =  {
+            //             producto,
+            //             cantidad,
+            //             resultQuery.getFloat("precio")
+            //         };
+
+            //         // Poner información sacada en cada columna de la tabla
+            //         tablaTotal.addRow(PeliculaSeleccionada);
+            //     }
+			// }else{
+			// 	JOptionPane.showMessageDialog(null, "La pelicula no se encuentra en stock o seleccionó más peliculas de los que se disponen.", "Productos sin disponibilidad", JOptionPane.WARNING_MESSAGE);
+			// }
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
 	} 
 }

@@ -5,16 +5,19 @@ import javax.swing.JOptionPane;
 
 public class MainClass {
     public static void main(String[] args) {
+        //Conexión con BD mediado con un Singleton
+        Connection conn = ConexionBD.getConnection();
+
         //Instanciar objeto ConexionBD
-        ConexionBD bdcon = new ConexionBD();
+        //ConexionBD bdcon = new ConexionBD();
 
         //Crear variable para el estado de la conexión
-        Connection estadoBD = bdcon.connBD;
+        //Connection estadoBD = bdcon.connBD;
 
         //Mandar a llamar el método para poder conectarse
-        bdcon.getConexion();
+        //bdcon.getConexion();
 
-        if(estadoBD == null){   
+        if(conn == null){   
             JOptionPane.showMessageDialog(null, "Error al intentar conectarse con la base de datos. \n\nFavor de contactarse con el técnico del programa.", "ERROR", JOptionPane.ERROR_MESSAGE);
         }else{
             //Método para poder iniciar la ventana login
@@ -35,9 +38,6 @@ public class MainClass {
                 java.util.logging.Logger.getLogger(VentanaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             } catch (javax.swing.UnsupportedLookAndFeelException ex) {
                 java.util.logging.Logger.getLogger(VentanaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            }finally{
-                if(bdcon != null)
-                    bdcon.desconectarBD();
             }
 
             // Crear y mostrar la ventana

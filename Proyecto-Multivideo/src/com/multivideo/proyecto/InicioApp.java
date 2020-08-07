@@ -18,70 +18,59 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class InicioApp extends javax.swing.JFrame {
-
-    // Instanciar clase ConexionBD
-    ConexionBD bdcon = new ConexionBD();
-    Connection conStatus = bdcon.connBD;
-
-    //Instanciar clase Pelicula
-    Pelicula peliculaAcc = new Pelicula();
+    //Conexión con BD mediado con un Singleton
+    Connection conn = ConexionBD.getConnection();
 
     JFrame ventanaMain;
 
-    // protected void mostrarPeliculasLista(){
-    //     try{
-    //         String qBuscarPeliculas = "SELECT * FROM peliculas";
+    protected void mostrarPeliculasLista(){
+        try{
+            String qBuscarPeliculas = "SELECT * FROM peliculas";
 
-    //         PreparedStatement execQuery = conStatus.prepareStatement(qBuscarPeliculas);
-    //         ResultSet resQuery = execQuery.executeQuery();
+            PreparedStatement execQuery = conn.prepareStatement(qBuscarPeliculas);
+            ResultSet resQuery = execQuery.executeQuery();
 
-    //         DefaultListModel listaPeliculas = new DefaultListModel();
+            DefaultListModel listaPeliculas = new DefaultListModel();
             
-    //         while (resQuery.next()) {
-    //             String pelicula = resQuery.getString("nombre");
+            while (resQuery.next()) {
+                String pelicula = resQuery.getString("nombre");
 
-    //             //Agregar elemento
-    //             listaPeliculas.addElement(pelicula);
-    //         }
+                //Agregar elemento
+                listaPeliculas.addElement(pelicula);
+            }
 
-    //         lstPeliculas.setModel(listaPeliculas);
-    //     }catch(Exception e){
-    //         JOptionPane.showMessageDialog(null, e);
-    //     }finally{
-    //         if(bdcon != null)
-    //             bdcon.desconectarBD();
-    //     }
-    // }
+            lstPeliculas.setModel(listaPeliculas);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
 
-    // protected void mostrarProductosLista(){
-    //     try{
-    //         String qBuscarProductos = "SELECT * FROM productos";
+    protected void mostrarProductosLista(){
+        try{
+            String qBuscarProductos = "SELECT * FROM productos";
 
-    //         PreparedStatement execQuery = conStatus.prepareStatement(qBuscarProductos);
-    //         ResultSet resQuery = execQuery.executeQuery();
+            PreparedStatement execQuery = conn.prepareStatement(qBuscarProductos);
+            ResultSet resQuery = execQuery.executeQuery();
 
-    //         DefaultListModel listaProductos = new DefaultListModel();
+            DefaultListModel listaProductos = new DefaultListModel();
 
-    //         while(resQuery.next()){
-    //             String producto = resQuery.getString("nombre");
+            while(resQuery.next()){
+                String producto = resQuery.getString("nombre");
 
-    //             //Agregar elemento
-    //             listaProductos.addElement(producto);
-    //         }
+                //Agregar elemento
+                listaProductos.addElement(producto);
+            }
 
-    //         lstProductos.setModel(listaProductos);
-    //     }catch(Exception e){
-    //         JOptionPane.showMessageDialog(null, e);
-    //     }finally{
-    //         if(bdcon != null)
-    //             bdcon.desconectarBD();
-    //     }
-    // }
+            lstProductos.setModel(listaProductos);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
 
     public InicioApp() {
         initComponents();
-        peliculaAcc.mostrarPeliculasLista();
-        peliculaAcc.mostrarProductosLista();
+        mostrarPeliculasLista();
+        mostrarProductosLista();
     }
 
     @SuppressWarnings("unchecked")
@@ -156,6 +145,11 @@ public class InicioApp extends javax.swing.JFrame {
         });
 
         btnPelicula.setText("Seleccionar pelicula");
+        btnPelicula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPeliculaActionPerformed(evt);
+            }
+        });
 
         txTotal.setEditable(false);
         jScrollPane3.setViewportView(txTotal);
@@ -377,23 +371,18 @@ public class InicioApp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductoActionPerformed
-        //Seleccionar producto
-        String productoSeleccionado = lstProductos.getSelectedValue();
-
-        //Pedir la cantidad a desear
-        String cantidadOpcion = JOptionPane.showInputDialog(null, "Cantidad deseada: "); 
-        int cantidadProducto = Integer.parseInt(cantidadOpcion);
         
-        //Mandar a llamar el método para buscar si hay disponibilidad del producto
-        //peliculaAcc.checarDisponibilidad(productoSeleccionado, cantidadProducto); 
-
-        JOptionPane.showMessageDialog(null, productoSeleccionado);
     }//GEN-LAST:event_btnProductoActionPerformed
 
     private void mnuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSalirActionPerformed
         // Al dar click, salir de la app;
         this.dispose();
-        bdcon.desconectarBD();
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         System.exit(0);
     }//GEN-LAST:event_mnuSalirActionPerformed
 
@@ -450,9 +439,29 @@ public class InicioApp extends javax.swing.JFrame {
     private void mnuSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuSalirMouseClicked
         // Al dar click, salir de la app;
         this.dispose();
-        bdcon.desconectarBD();
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         System.exit(0);
     }//GEN-LAST:event_mnuSalirMouseClicked
+
+    private void btnPeliculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPeliculaActionPerformed
+        //Seleccionar pelicula
+        String peliculaSeleccionada = lstPeliculas.getSelectedValue();
+
+        //Pedir la cantidad a desear
+        String cantidadOpcion = JOptionPane.showInputDialog(null, "Cantidad deseada: "); 
+        int cantidadProducto = Integer.parseInt(cantidadOpcion);
+        
+        //Mandar a llamar el método para buscar si hay disponibilidad del producto
+        Pelicula peliculaAcc = new Pelicula();
+        peliculaAcc.checarDisponibilidad(peliculaSeleccionada, cantidadProducto); 
+
+        JOptionPane.showMessageDialog(null, peliculaSeleccionada);
+    }//GEN-LAST:event_btnPeliculaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCompra;
@@ -480,7 +489,7 @@ public class InicioApp extends javax.swing.JFrame {
     private javax.swing.JMenu mnuRentas;
     private javax.swing.JMenu mnuReportes;
     private javax.swing.JMenu mnuSalir;
-    private javax.swing.JTable tblTotal;
+    protected javax.swing.JTable tblTotal;
     private javax.swing.JTextPane txTotal;
     // End of variables declaration//GEN-END:variables
 }

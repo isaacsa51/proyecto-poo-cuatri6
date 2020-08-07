@@ -8,10 +8,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class StockVentana extends javax.swing.JFrame {
-    
-    // Instanciar conexión
-    ConexionBD bdcon = new ConexionBD();
-    Connection conStatus = bdcon.connBD;
+    //Conexión con BD mediado con un Singleton
+    Connection conn = ConexionBD.getConnection();
 
     // Instanciar clase Inventario
     Inventario invAcciones = new Inventario();
@@ -20,7 +18,7 @@ public class StockVentana extends javax.swing.JFrame {
         try {
             String queryProductos = "SELECT * FROM productos";
 
-            PreparedStatement execQuery = conStatus.prepareStatement(queryProductos);
+            PreparedStatement execQuery = conn.prepareStatement(queryProductos);
             ResultSet resQuery = execQuery.executeQuery();
 
             DefaultTableModel tablaProductos = (DefaultTableModel) tblProductos.getModel();
@@ -34,9 +32,6 @@ public class StockVentana extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
-        }finally{
-            if(bdcon != null)
-                bdcon.desconectarBD();
         }
     }
 
@@ -44,7 +39,7 @@ public class StockVentana extends javax.swing.JFrame {
         try {
             String queryPeliculas = "SELECT * FROM peliculas";
 
-            PreparedStatement execQuery = conStatus.prepareStatement(queryPeliculas);
+            PreparedStatement execQuery = conn.prepareStatement(queryPeliculas);
             ResultSet resQuery = execQuery.executeQuery();
 
             DefaultTableModel tablaPeliculas = (DefaultTableModel) tblPeliculas.getModel();
@@ -58,9 +53,6 @@ public class StockVentana extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
-        }finally{
-            if(bdcon != null)
-                bdcon.desconectarBD();
         }
     }
 

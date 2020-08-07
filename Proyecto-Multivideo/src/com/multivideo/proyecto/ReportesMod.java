@@ -19,7 +19,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ReportesMod {
     
-    ConexionBD bdcon = new ConexionBD();
+    //Conexión con BD mediado con un Singleton
+    Connection conn = ConexionBD.getConnection();
     Reportes vista;
     
     public ReportesMod(Reportes vist){
@@ -71,9 +72,6 @@ public class ReportesMod {
         }
         catch(SQLException e){
             e.printStackTrace();
-        }finally{
-            if(bdcon != null)
-                bdcon.desconectarBD();
         }
     }
     

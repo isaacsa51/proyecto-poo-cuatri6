@@ -8,9 +8,11 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 public class VentanaLogin extends javax.swing.JFrame {
+    //Conexión con BD mediado con un Singleton
+    Connection conn = ConexionBD.getConnection();
 
-    //Instanciar objeto ConexionBD
-    ConexionBD bdcon = new ConexionBD();
+    //ConexionBD conn = ConexionBD.getInstance();
+    //Connection = estadoBD = conn.connBD;
 
     //Crea la ventana con todos sus componentes
     public VentanaLogin() {
@@ -134,7 +136,12 @@ public class VentanaLogin extends javax.swing.JFrame {
     //Al dar click salir de la aplicación
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {        
         this.dispose();
-        bdcon.desconectarBD();
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         System.exit(0);
     }
 
