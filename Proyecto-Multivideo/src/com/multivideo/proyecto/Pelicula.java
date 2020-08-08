@@ -14,7 +14,7 @@ public class Pelicula {
 	//Métodos
     protected void checarDisponibilidad(String producto, int cantidad){
         try { 
-			String qChecarDisponibilidad = "SELECT nombre FROM peliculas WHERE nombre = ? AND stock > 0";
+			String qChecarDisponibilidad = "SELECT nombre,precio,stock FROM peliculas WHERE nombre = ? AND stock > 0";
 
 			PreparedStatement execQuery = conn.prepareStatement(qChecarDisponibilidad);
 			
@@ -24,36 +24,36 @@ public class Pelicula {
             DefaultTableModel tablaTotal = (DefaultTableModel) ventanaPrincipal.tblTotal.getModel();
             tablaTotal.setRowCount(0);
 
-            //Poner información del producto a la tabla
-            while(resultQuery.next()){
-                Object PeliculaSeleccionada[] =  {
-                    producto,
-                    cantidad
-                    //resultQuery.getFloat("Precio")
-                };
+			//Checar disponibilidad
+			if(resultQuery.next()){
+                //Poner información del producto a la tabla
+                while(resultQuery.next()){
+                    Object PeliculaSeleccionada[] =  {
+                        producto,
+                        cantidad,
+                        resultQuery.getFloat("precio")
+                    };
 
-                // Poner información sacada en cada columna de la tabla
-                tablaTotal.addRow(PeliculaSeleccionada);
-            }
-
-			// //Checar disponibilidad
-			// if(resultQuery.next()){
-            //     //Poner información del producto a la tabla
-            //     while(resultQuery.next()){
-            //         Object PeliculaSeleccionada[] =  {
-            //             producto,
-            //             cantidad,
-            //             resultQuery.getFloat("precio")
-            //         };
-
-            //         // Poner información sacada en cada columna de la tabla
-            //         tablaTotal.addRow(PeliculaSeleccionada);
-            //     }
-			// }else{
-			// 	JOptionPane.showMessageDialog(null, "La pelicula no se encuentra en stock o seleccionó más peliculas de los que se disponen.", "Productos sin disponibilidad", JOptionPane.WARNING_MESSAGE);
-			// }
+                    // Poner información sacada en cada columna de la tabla
+                    tablaTotal.addRow(PeliculaSeleccionada);
+                }
+			}else{
+				JOptionPane.showMessageDialog(null, "La pelicula no se encuentra en stock o seleccionó más peliculas de los que se disponen.", "Productos sin disponibilidad", JOptionPane.WARNING_MESSAGE);
+			}
 		}catch(SQLException e){
-			e.printStackTrace();
+            e.printStackTrace();
 		}
-	} 
+    }
+
+    /*
+     *  @param nombre, nombre de la persona
+     *  @param telefono, telefono de la persona
+     *  @param INE, identificación dejada ingresando su clave de lector, también puede ser curp
+     *  @param fechaInicio, inicio de la renta
+     *  @param fechaFin, fin de la renta
+     *  @param pelicula, nombre de la pelicula
+     */
+    protected void crearRenta(String nombre, String telefono, String INE, String fechaInicio, String fechaFin, String pelicula){
+        
+    }
 }
