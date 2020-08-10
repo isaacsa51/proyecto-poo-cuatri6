@@ -162,11 +162,10 @@ public class InicioApp extends javax.swing.JFrame {
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
-                {null, null, null},
                 {null, null, null}
             },
             new String [] {
-                "Producto", "Cantidad", "Precio"
+                "Producto", "Cantidad", "TOTAL"
             }
         ) {
             Class[] types = new Class [] {
@@ -184,6 +183,7 @@ public class InicioApp extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblTotal.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblTotal);
 
         btnLimpiar.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
@@ -191,6 +191,11 @@ public class InicioApp extends javax.swing.JFrame {
 
         btnCompra.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         btnCompra.setText("COMPRA");
+        btnCompra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCompraActionPerformed(evt);
+            }
+        });
 
         mnuRentas.setText("Rentas");
         mnuRentas.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -373,7 +378,19 @@ public class InicioApp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductoActionPerformed
+        //Seleccionar producto
+        String peliculaSeleccionada = lstProductos.getSelectedValue();
+
+        //Pedir la cantidad a desear
+        String cantidadOpcion = JOptionPane.showInputDialog(null, "Cantidad a llevar: "); 
+        int cantidadProducto = Integer.parseInt(cantidadOpcion);
         
+        //Mandar a llamar el método para buscar si hay disponibilidad del producto
+        Producto productoAcc = new Producto();
+        if (productoAcc.checarDisponibilidad(peliculaSeleccionada, cantidadProducto) == 0){
+            productoAcc.mostrarCompra(peliculaSeleccionada, cantidadProducto);
+            //tblTotal.revalidate();
+        }
     }//GEN-LAST:event_btnProductoActionPerformed
 
     private void mnuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSalirActionPerformed
@@ -455,15 +472,17 @@ public class InicioApp extends javax.swing.JFrame {
         String peliculaSeleccionada = lstPeliculas.getSelectedValue();
 
         //Pedir la cantidad a desear
-        String cantidadOpcion = JOptionPane.showInputDialog(null, "Cantidad deseada: "); 
-        int cantidadProducto = Integer.parseInt(cantidadOpcion);
+        String cantidadOpcion = JOptionPane.showInputDialog(null, "Cantidad a llevar: "); 
+        int cantidadPelicula = Integer.parseInt(cantidadOpcion);
         
         //Mandar a llamar el método para buscar si hay disponibilidad del producto
         Pelicula peliculaAcc = new Pelicula();
-        peliculaAcc.checarDisponibilidad(peliculaSeleccionada, cantidadProducto); 
-
-        JOptionPane.showMessageDialog(null, peliculaSeleccionada);
+        //peliculaAcc.checarDisponibilidad(peliculaSeleccionada, cantidadPelicula); 
     }//GEN-LAST:event_btnPeliculaActionPerformed
+
+    private void btnCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCompraActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCompra;
@@ -491,7 +510,7 @@ public class InicioApp extends javax.swing.JFrame {
     private javax.swing.JMenu mnuRentas;
     private javax.swing.JMenu mnuReportes;
     private javax.swing.JMenu mnuSalir;
-    private javax.swing.JTable tblTotal;
+    protected javax.swing.JTable tblTotal;
     private javax.swing.JTextPane txTotal;
     // End of variables declaration//GEN-END:variables
 }
