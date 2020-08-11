@@ -159,14 +159,9 @@ public class InicioApp extends javax.swing.JFrame {
         jLabel6.setText("TOTAL:");
 
         tblTotal.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
             new String [] {
                 "Producto", "Cantidad", "TOTAL"
-            }
+            }, 0
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.Integer.class, java.lang.Float.class
@@ -269,7 +264,7 @@ public class InicioApp extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 20, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(145, 145, 145))
             .addGroup(layout.createSequentialGroup()
@@ -302,15 +297,14 @@ public class InicioApp extends javax.swing.JFrame {
                                             .addComponent(jLabel4)))
                                     .addGap(15, 15, 15)
                                     .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(98, 98, 98)
-                                            .addComponent(jLabel5))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                                                .addComponent(btnPelicula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                                            .addComponent(btnPelicula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addComponent(jLabel5)
+                                            .addGap(80, 80, 80))))
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(198, 198, 198)
@@ -339,13 +333,13 @@ public class InicioApp extends javax.swing.JFrame {
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnProducto)
                             .addComponent(btnPelicula))
@@ -363,10 +357,10 @@ public class InicioApp extends javax.swing.JFrame {
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 4, Short.MAX_VALUE))
+                        .addGap(0, 6, Short.MAX_VALUE))
                     .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCompra, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 280, Short.MAX_VALUE)
@@ -388,10 +382,24 @@ public class InicioApp extends javax.swing.JFrame {
         //Mandar a llamar el método para buscar si hay disponibilidad del producto
         Producto productoAcc = new Producto();
         if (productoAcc.checarDisponibilidad(peliculaSeleccionada, cantidadProducto) == 0){
-            productoAcc.mostrarCompra(peliculaSeleccionada, cantidadProducto);
-            //tblTotal.revalidate();
+            productoAcc.mostrarCompra(peliculaSeleccionada, cantidadProducto, this);
         }
     }//GEN-LAST:event_btnProductoActionPerformed
+
+    private void btnPeliculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPeliculaActionPerformed
+        //Seleccionar pelicula
+        String peliculaSeleccionada = lstPeliculas.getSelectedValue();
+
+        //Pedir la cantidad a desear
+        String cantidadOpcion = JOptionPane.showInputDialog(null, "Cantidad a llevar: "); 
+        int cantidadPelicula = Integer.parseInt(cantidadOpcion);
+        
+        //Mandar a llamar el método para buscar si hay disponibilidad del producto
+        Pelicula peliculaAcc = new Pelicula();
+        if(peliculaAcc.checarDisponibilidad(peliculaSeleccionada, cantidadPelicula) == 0){
+            peliculaAcc.mostrarCompra(peliculaSeleccionada, cantidadPelicula, this);
+        } 
+    }//GEN-LAST:event_btnPeliculaActionPerformed
 
     private void mnuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSalirActionPerformed
         // Al dar click, salir de la app;
@@ -466,19 +474,6 @@ public class InicioApp extends javax.swing.JFrame {
         }
         System.exit(0);
     }//GEN-LAST:event_mnuSalirMouseClicked
-
-    private void btnPeliculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPeliculaActionPerformed
-        //Seleccionar pelicula
-        String peliculaSeleccionada = lstPeliculas.getSelectedValue();
-
-        //Pedir la cantidad a desear
-        String cantidadOpcion = JOptionPane.showInputDialog(null, "Cantidad a llevar: "); 
-        int cantidadPelicula = Integer.parseInt(cantidadOpcion);
-        
-        //Mandar a llamar el método para buscar si hay disponibilidad del producto
-        Pelicula peliculaAcc = new Pelicula();
-        //peliculaAcc.checarDisponibilidad(peliculaSeleccionada, cantidadPelicula); 
-    }//GEN-LAST:event_btnPeliculaActionPerformed
 
     private void btnCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraActionPerformed
         // TODO add your handling code here:
