@@ -503,7 +503,9 @@ public class InicioApp extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuSalirMouseClicked
 
     private void btnCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraActionPerformed
-        // TODO add your handling code here:
+        // Proceder a hacer la compra
+
+        
     }//GEN-LAST:event_btnCompraActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed

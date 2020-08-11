@@ -46,7 +46,7 @@ public class StockVentana extends javax.swing.JFrame {
             tablaPeliculas.setRowCount(0);
 
             while (resQuery.next()) {
-                Object peliculas[] = { resQuery.getString("idpelicula"), resQuery.getString("nombre"),resQuery.getString("genero"), resQuery.getFloat("precio"), resQuery.getInt("stock")};
+                Object peliculas[] = { resQuery.getString("idpelicula"), resQuery.getString("nombre"),resQuery.getString("genero"), resQuery.getFloat("precio"), resQuery.getInt("cantidad")};
 
                 // Poner información sacada en cada columna de la tabla
                 tablaPeliculas.addRow(peliculas);
@@ -282,31 +282,37 @@ public class StockVentana extends javax.swing.JFrame {
     private void btnAggProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAggProductosActionPerformed
         //Mostrar ventana de agregar
         invAcciones.ventanaAggProducto();
+        mostrarProductos();
     }//GEN-LAST:event_btnAggProductosActionPerformed
 
     private void btnModProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModProductosActionPerformed
         //Mostrar ventana de modificar
         invAcciones.ventanaModProducto();
+        mostrarProductos();
     }//GEN-LAST:event_btnModProductosActionPerformed
 
     private void btnEliProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliProductosActionPerformed
         //Mostrar ventana de eliminar
         invAcciones.ventanaElimProducto();
+        mostrarProductos();
     }//GEN-LAST:event_btnEliProductosActionPerformed
 
     private void btnAggPeliculasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAggPeliculasActionPerformed
         //Mostrar ventana de agregar
         invAcciones.ventanaAggPelicula();
+        mostrarPeliculas();
     }//GEN-LAST:event_btnAggPeliculasActionPerformed
 
     private void btnModPeliculasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModPeliculasActionPerformed
         //Mostrar ventana de modificar
         invAcciones.ventanaModPelicula();
+        mostrarPeliculas();
     }//GEN-LAST:event_btnModPeliculasActionPerformed
 
     private void btnEliPeliculasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliPeliculasActionPerformed
         //Mostrar ventana de eliminar
         invAcciones.ventanaElimPelicula();
+        mostrarPeliculas();
     }//GEN-LAST:event_btnEliPeliculasActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

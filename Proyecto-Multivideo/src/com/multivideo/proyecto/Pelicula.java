@@ -84,8 +84,4 @@ public class Pelicula {
     protected void crearRenta(String nombre, String telefono, String INE, String fechaInicio, String fechaFin, String pelicula){
         
     }
-
-    protected void compraPelicula(){
-
-    }
 }
