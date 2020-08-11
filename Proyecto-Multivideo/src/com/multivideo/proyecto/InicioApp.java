@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.EventListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
@@ -15,6 +16,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 
 public class InicioApp extends javax.swing.JFrame {
@@ -71,6 +73,7 @@ public class InicioApp extends javax.swing.JFrame {
         initComponents();
         mostrarPeliculasLista();
         mostrarProductosLista();
+        sumaTotalPago();
     }
 
     @SuppressWarnings("unchecked")
@@ -153,15 +156,22 @@ public class InicioApp extends javax.swing.JFrame {
         });
 
         txTotal.setEditable(false);
+        txTotal.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        txTotal.setAlignmentX(1.0F);
+        txTotal.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        txTotal.setFocusable(false);
         jScrollPane3.setViewportView(txTotal);
 
         jLabel6.setFont(new java.awt.Font("Dialog", 3, 18)); // NOI18N
         jLabel6.setText("TOTAL:");
 
         tblTotal.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
             new String [] {
                 "Producto", "Cantidad", "TOTAL"
-            }, 0
+            }
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.Integer.class, java.lang.Float.class
@@ -183,6 +193,11 @@ public class InicioApp extends javax.swing.JFrame {
 
         btnLimpiar.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
         btnLimpiar.setText("LIMPIAR");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         btnCompra.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         btnCompra.setText("COMPRA");
@@ -376,14 +391,20 @@ public class InicioApp extends javax.swing.JFrame {
         String peliculaSeleccionada = lstProductos.getSelectedValue();
 
         //Pedir la cantidad a desear
-        String cantidadOpcion = JOptionPane.showInputDialog(null, "Cantidad a llevar: "); 
-        int cantidadProducto = Integer.parseInt(cantidadOpcion);
-        
-        //Mandar a llamar el método para buscar si hay disponibilidad del producto
-        Producto productoAcc = new Producto();
-        if (productoAcc.checarDisponibilidad(peliculaSeleccionada, cantidadProducto) == 0){
-            productoAcc.mostrarCompra(peliculaSeleccionada, cantidadProducto, this);
+        try{
+            String cantidadOpcion = JOptionPane.showInputDialog(null, "Cantidad a llevar: "); 
+            int cantidadProducto = Integer.parseInt(cantidadOpcion);
+
+            //Mandar a llamar el método para buscar si hay disponibilidad del producto
+            Producto productoAcc = new Producto();
+            if (productoAcc.checarDisponibilidad(peliculaSeleccionada, cantidadProducto) == 0){
+                productoAcc.mostrarCompra(peliculaSeleccionada, cantidadProducto, this);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Ingrese números", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
+        sumaTotalPago();
     }//GEN-LAST:event_btnProductoActionPerformed
 
     private void btnPeliculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPeliculaActionPerformed
@@ -391,14 +412,20 @@ public class InicioApp extends javax.swing.JFrame {
         String peliculaSeleccionada = lstPeliculas.getSelectedValue();
 
         //Pedir la cantidad a desear
-        String cantidadOpcion = JOptionPane.showInputDialog(null, "Cantidad a llevar: "); 
-        int cantidadPelicula = Integer.parseInt(cantidadOpcion);
+        try {
+            String cantidadOpcion = JOptionPane.showInputDialog(null, "Cantidad a llevar: "); 
+            int cantidadPelicula = Integer.parseInt(cantidadOpcion);
+            
+            //Mandar a llamar el método para buscar si hay disponibilidad del producto
+            Pelicula peliculaAcc = new Pelicula();
+            if(peliculaAcc.checarDisponibilidad(peliculaSeleccionada, cantidadPelicula) == 0){
+                peliculaAcc.mostrarCompra(peliculaSeleccionada, cantidadPelicula, this);
+            }     
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ingrese números", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
-        //Mandar a llamar el método para buscar si hay disponibilidad del producto
-        Pelicula peliculaAcc = new Pelicula();
-        if(peliculaAcc.checarDisponibilidad(peliculaSeleccionada, cantidadPelicula) == 0){
-            peliculaAcc.mostrarCompra(peliculaSeleccionada, cantidadPelicula, this);
-        } 
+        sumaTotalPago();
     }//GEN-LAST:event_btnPeliculaActionPerformed
 
     private void mnuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSalirActionPerformed
@@ -478,6 +505,25 @@ public class InicioApp extends javax.swing.JFrame {
     private void btnCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompraActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCompraActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        //Limpiar tabla Total
+        DefaultTableModel tablaTotalLimpia = (DefaultTableModel) tblTotal.getModel();
+        tablaTotalLimpia.setRowCount(0);
+
+        sumaTotalPago();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    //Método para sumar total en el TextField correspondiente
+    protected void sumaTotalPago(){
+        float total = 0;
+
+        for(int i = 0; i < tblTotal.getRowCount(); i++){
+            total = total + Float.parseFloat(tblTotal.getValueAt(i, 2).toString());
+        }
+
+        txTotal.setText(Float.toString(total));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCompra;

@@ -81,14 +81,6 @@ public class Pelicula {
         }
     }
 
-    /*
-     *  @param nombre, nombre de la persona
-     *  @param telefono, telefono de la persona
-     *  @param INE, identificación dejada ingresando su clave de lector, también puede ser curp
-     *  @param fechaInicio, inicio de la renta
-     *  @param fechaFin, fin de la renta
-     *  @param pelicula, nombre de la pelicula
-     */
     protected void crearRenta(String nombre, String telefono, String INE, String fechaInicio, String fechaFin, String pelicula){
         
     }
