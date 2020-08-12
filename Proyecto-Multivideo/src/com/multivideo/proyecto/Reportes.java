@@ -40,17 +40,17 @@ public class Reportes extends javax.swing.JFrame {
 
         tbl_reportes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Cliente", "Producto", "Cantidad", "Precio", "Fecha"
+                "Id", "Tipo", "Nombre", "Cliente", "Cantidad", "Fecha", "Total"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -74,6 +74,11 @@ public class Reportes extends javax.swing.JFrame {
         });
 
         btn_año.setText("Año");
+        btn_año.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_añoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -129,11 +134,18 @@ public class Reportes extends javax.swing.JFrame {
 
     private void btn_mesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mesActionPerformed
         // TODO add your handling code here:
+        modelo.mostrar("mes");
     }//GEN-LAST:event_btn_mesActionPerformed
 
     private void btn_diaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_diaActionPerformed
         // TODO add your handling code here:
+        modelo.mostrar("dia");
     }//GEN-LAST:event_btn_diaActionPerformed
+
+    private void btn_añoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_añoActionPerformed
+        // TODO add your handling code here:
+        modelo.mostrar("año");
+    }//GEN-LAST:event_btn_añoActionPerformed
 
     /**
      * @param args the command line arguments
