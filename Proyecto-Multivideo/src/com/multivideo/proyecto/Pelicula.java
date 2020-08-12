@@ -1,7 +1,6 @@
 package com.multivideo.proyecto;
 
 import java.sql.*;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -79,9 +78,5 @@ public class Pelicula {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    protected void crearRenta(String nombre, String telefono, String INE, String fechaInicio, String fechaFin, String pelicula){
-        
     }
 }

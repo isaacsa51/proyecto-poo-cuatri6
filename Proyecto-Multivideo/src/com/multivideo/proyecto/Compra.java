@@ -1,14 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.multivideo.proyecto;
 
-/**
- *
- * @author isaac
- */
+import java.sql.Connection;
+
 public class Compra {
-    
+	//Conexión a la BD
+	Connection conn = ConexionBD.getInstance().getConnection();
+
+	//Métodos
+	protected void crearCompra(String[] productos, int[] cantidad, float precioTotal, float precioCliente){
+
+	}
 }

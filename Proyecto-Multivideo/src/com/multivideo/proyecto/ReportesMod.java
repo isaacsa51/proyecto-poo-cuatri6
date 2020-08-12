@@ -10,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,7 +17,6 @@ import javax.swing.table.DefaultTableModel;
  * @author Ghost
  */
 public class ReportesMod {
-    
     //Conexión con BD mediado con un Singleton
     Connection conn = ConexionBD.getInstance().getConnection();
     Reportes vista;

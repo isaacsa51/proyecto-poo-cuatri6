@@ -3,7 +3,6 @@ package com.multivideo.proyecto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -96,7 +95,7 @@ public class StockVentana extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Genero", "Precio", "Stock"
+                "ID", "Nombre", "Genero", "Precio", "Cantidad"
             }
         ) {
             Class[] types = new Class [] {
