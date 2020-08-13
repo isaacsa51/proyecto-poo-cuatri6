@@ -344,7 +344,7 @@ public class PeliculasRentadas extends javax.swing.JFrame {
 		//Comprobar si hay datos
 		try{
 			//Mandar a llamar método para crear la renta
-			rentaAcc.crearRenta(tfNombre.getText(), IDPELICULA, fechaInicio, fechaFin, );
+			rentaAcc.crearRenta(tfNombre.getText(), IDPELICULA, fechaInicio, fechaFin);
 		}catch(Exception e){
 			JOptionPane.showMessageDialog(null, "Favor de rellenar los campos necesarios");
 		}

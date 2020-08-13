@@ -12,15 +12,15 @@ public class Renta {
 	Connection conn = ConexionBD.getInstance().getConnection();
 
 	//Métodos
-	protected void crearRenta(String ine, String idPelicula, String inicio, String entrega){
+	protected void crearRenta(String ine, int idPelicula, String inicio, String entrega){
             try{
-                String procRenta = "CALL Insertar_Renta(?, ?, ?, ?)";
+                String procRenta = "{CALL Insertar_Renta(?, ?, ?, ?)}";
                 
                 CallableStatement cs = null;
                 
                 cs = conn.prepareCall(procRenta);
                 cs.setString(1, ine);
-                cs.setString(2, idPelicula);
+                cs.setInt(2, idPelicula);
                 cs.setString(3, inicio);
                 cs.setString(4, entrega);
                 
