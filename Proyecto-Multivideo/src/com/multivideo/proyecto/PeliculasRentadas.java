@@ -312,6 +312,27 @@ public class PeliculasRentadas extends javax.swing.JFrame {
 
 		//Obtener la pelicula seleccionada de la lista
 		String peliculaSeleccionada = lstPeliculas.getSelectedValue();
+                
+                
+                //TEST
+                int IDPELICULA = 0;
+                
+                try{
+                    String querySacarID = "SELECT idpelicula FROM peliculas WHERE nombre = ?";
+                    PreparedStatement execQuery = null;
+
+                    
+                    PreparedStatement ps = conn.prepareStatement(querySacarID);
+
+                    ps.setString(1, peliculaSeleccionada);
+                    ResultSet rs = ps.executeQuery();
+                    
+                    if(rs.next())
+                        IDPELICULA = rs.getInt(1);
+                    
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
 
 		//Formato para la fecha
 		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
@@ -323,7 +344,7 @@ public class PeliculasRentadas extends javax.swing.JFrame {
 		//Comprobar si hay datos
 		try{
 			//Mandar a llamar método para crear la renta
-			rentaAcc.crearRenta(tfNombre.getText(), tfTelefono.getText(), tfINE.getText(), fechaInicio, fechaFin, peliculaSeleccionada);
+			rentaAcc.crearRenta(tfNombre.getText(), IDPELICULA, fechaInicio, fechaFin, );
 		}catch(Exception e){
 			JOptionPane.showMessageDialog(null, "Favor de rellenar los campos necesarios");
 		}
