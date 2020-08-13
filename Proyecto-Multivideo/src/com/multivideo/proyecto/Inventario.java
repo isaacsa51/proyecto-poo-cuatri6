@@ -3,11 +3,7 @@ package com.multivideo.proyecto;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import javax.swing.*;
 
 public class Inventario extends JDialog{
@@ -715,14 +711,27 @@ public class Inventario extends JDialog{
 			}else{
 				//Agregar producto
 				try {
-					String qInsertarProducto = "INSERT INTO productos (idproducto, nombre, cantidad, precio)" + "VALUES (?, ?, ?, ?)";
+					String aggProducto_proc = "{CALL Insertar_Productos(?, ?, ?, ?)}";
 
-					PreparedStatement execQuery = conn.prepareStatement(qInsertarProducto);
-					execQuery.setString(1, ID);
-					execQuery.setString(2, nombre);
-					execQuery.setInt(3, cantidad);
-					execQuery.setFloat(4, precio);
-					execQuery.executeUpdate();
+					CallableStatement cs = null;
+
+					cs = conn.prepareCall(aggProducto_proc);
+					cs.setString(1, ID);
+					cs.setString(2, nombre);
+					cs.setFloat(3, precio);
+					cs.setInt(4, cantidad);
+
+					//Ejecutar procedimiento
+					cs.execute();
+
+//					String qInsertarProducto = "INSERT INTO productos (idproducto, nombre, cantidad, precio)" + "VALUES (?, ?, ?, ?)";
+//
+//					PreparedStatement execQuery = conn.prepareStatement(qInsertarProducto);
+//					execQuery.setString(1, ID);
+//					execQuery.setString(2, nombre);
+//					execQuery.setInt(3, cantidad);
+//					execQuery.setFloat(4, precio);
+//					execQuery.executeUpdate();
 
 					//Mostrar mensaje y cerrar ventana
 					JOptionPane.showMessageDialog(this, "Producto ingresado correctamente");
@@ -795,15 +804,29 @@ public class Inventario extends JDialog{
 			}else{
 				//Agregar producto
 				try {
-					String queryAggPelicula = "INSERT INTO peliculas (idpelicula, nombre, genero, precio, cantidad)" + "VALUES (?, ?, ?, ?, ?)";
+					String aggProducto_proc = "{CALL Insertar_Peliculas(?, ?, ?, ?)}";
 
-					PreparedStatement execQuery = conn.prepareStatement(queryAggPelicula);
-					execQuery.setString(1, ID);
-					execQuery.setString(2, nombre);
-					execQuery.setString(3, genero);
-					execQuery.setFloat(4, precio);
-					execQuery.setInt(5, cantidad);
-					execQuery.executeUpdate();
+					CallableStatement cs = null;
+
+					cs = conn.prepareCall(aggProducto_proc);
+					cs.setString(1, ID);
+					cs.setString(2, nombre);
+					cs.setString(3, genero);
+					cs.setInt(4, cantidad);
+					cs.setFloat(5, precio);
+
+					//Ejecutar procedimiento
+					cs.execute();
+
+//					String queryAggPelicula = "INSERT INTO peliculas (idpelicula, nombre, genero, precio, cantidad)" + "VALUES (?, ?, ?, ?, ?)";
+//
+//					PreparedStatement execQuery = conn.prepareStatement(queryAggPelicula);
+//					execQuery.setString(1, ID);
+//					execQuery.setString(2, nombre);
+//					execQuery.setString(3, genero);
+//					execQuery.setFloat(4, precio);
+//					execQuery.setInt(5, cantidad);
+//					execQuery.executeUpdate();
 
 					//Mostrar mensaje y cerrar ventana
 					JOptionPane.showMessageDialog(this, "Pelicula agregada correctamente");
