@@ -1,11 +1,7 @@
 package com.multivideo.proyecto;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
 
 public class VentanaLogin extends javax.swing.JFrame {
     //Conexión con BD mediado con un Singleton

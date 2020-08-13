@@ -1,18 +1,9 @@
 package com.multivideo.proyecto;
 
-import java.awt.Component;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.SpringLayout;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 public class CuentasVentana extends javax.swing.JFrame {

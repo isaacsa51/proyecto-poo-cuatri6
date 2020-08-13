@@ -9,8 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 public class Inventario extends JDialog{
 	//Conexión con BD mediado con un Singleton
@@ -797,7 +795,7 @@ public class Inventario extends JDialog{
 			}else{
 				//Agregar producto
 				try {
-					String queryAggPelicula = "INSERT INTO peliculas (idpelicula, nombre, genero, precio, stock)" + "VALUES (?, ?, ?, ?, ?)";
+					String queryAggPelicula = "INSERT INTO peliculas (idpelicula, nombre, genero, precio, cantidad)" + "VALUES (?, ?, ?, ?, ?)";
 
 					PreparedStatement execQuery = conn.prepareStatement(queryAggPelicula);
 					execQuery.setString(1, ID);
@@ -824,7 +822,7 @@ public class Inventario extends JDialog{
 
 		//Modificar la pelicula
 		try{
-			String queryModificar = "UPDATE peliculas SET genero = ?, " + "stock = ?" + ", precio = ?" + "WHERE nombre = ?";
+			String queryModificar = "UPDATE peliculas SET genero = ?, " + "cantidad = ?" + ", precio = ?" + "WHERE nombre = ?";
 
 			PreparedStatement execQuery = conn.prepareStatement(queryModificar);
 			execQuery.setString(1, genero);

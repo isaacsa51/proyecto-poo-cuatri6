@@ -39,7 +39,7 @@ public class Producto{
 					return 0;
 				}
 			}else{
-				JOptionPane.showMessageDialog(null, "La pelicula no se encuentra en stock", "Productos sin stock", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "El producto no se encuentra en stock", "Productos sin stock", JOptionPane.WARNING_MESSAGE);
 
 				return 1;
 			}
@@ -50,18 +50,19 @@ public class Producto{
 		return 0;
 	}
 	
-	protected void mostrarCompra(String producto, int cantidad){
+	protected void mostrarCompra(String producto, int cantidad, InicioApp ventanaApp){
 		try{
-			String queryCompra = "SELECT nombre, cantidad, precio FROM productos WHERE nombre = ? AND cantidad = ?";
+			String queryCompra = "SELECT nombre, cantidad, precio FROM productos WHERE nombre = ?";
 
 			PreparedStatement execQuery = conn.prepareStatement(queryCompra);
 			
 			execQuery.setString(1, producto);
-			execQuery.setInt(2, cantidad);
 			ResultSet resultQuery = execQuery.executeQuery();
 
-			DefaultTableModel tablaTotal = (DefaultTableModel) ventanaPrincipal.tblTotal.getModel();
-            tablaTotal.setRowCount(0);
+			DefaultTableModel tablaTotal = (DefaultTableModel) ventanaApp.tblTotal.getModel();
+
+			//Hacer que la tabla se de cuenta de la ultima posición
+            tablaTotal.setRowCount(tablaTotal.getRowCount());
 
 			while(resultQuery.next()){
 				//Obtener precio total
@@ -74,12 +75,9 @@ public class Producto{
 					precioTotal
 				};
 
-				//Poner información a la tabla 
+				//Poner información en la tabla 
 				tablaTotal.addRow(resultadoProducto);
             }
-            
-            // tablaTotal.fireTableDataChanged();
-            // tablaTotal.setRowCount(0);
         }catch(SQLException e){
             e.printStackTrace();
         }

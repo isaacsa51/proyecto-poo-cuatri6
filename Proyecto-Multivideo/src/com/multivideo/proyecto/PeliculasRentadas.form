@@ -100,7 +100,7 @@
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jScrollPane1" alignment="1" min="-2" pref="437" max="-2" attributes="0"/>
-                          <Component id="jToggleButton1" alignment="1" min="-2" pref="437" max="-2" attributes="0"/>
+                          <Component id="btnEliminarRenta" alignment="1" min="-2" pref="437" max="-2" attributes="0"/>
                           <Component id="brtRegresar" alignment="1" min="-2" pref="233" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -120,7 +120,7 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jScrollPane1" pref="0" max="32767" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jToggleButton1" min="-2" pref="37" max="-2" attributes="0"/>
+                      <Component id="btnEliminarRenta" min="-2" pref="37" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="brtRegresar" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -219,12 +219,12 @@
         <Component class="javax.swing.JTable" name="tblRentados">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="5" rowCount="4">
-                <Column editable="false" title="ID" type="java.lang.String"/>
-                <Column editable="false" title="Pelicula" type="java.lang.String"/>
-                <Column editable="false" title="Persona" type="java.lang.String"/>
-                <Column editable="false" title="Fecha Inicio" type="java.lang.String"/>
-                <Column editable="false" title="Fecha fin" type="java.lang.String"/>
+              <Table columnCount="5" rowCount="0">
+                <Column editable="false" title="ID Renta" type="java.lang.String"/>
+                <Column editable="false" title="INE" type="java.lang.String"/>
+                <Column editable="false" title="ID Pelicula" type="java.lang.String"/>
+                <Column editable="true" title="Fecha Inicio" type="java.lang.String"/>
+                <Column editable="true" title="Entrega" type="java.lang.String"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -342,12 +342,12 @@
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="dcFechaFin">
     </Component>
-    <Component class="javax.swing.JToggleButton" name="jToggleButton1">
+    <Component class="javax.swing.JToggleButton" name="btnEliminarRenta">
       <Properties>
         <Property name="text" type="java.lang.String" value="Eliminar renta seleccionada"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEliminarRentaActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
