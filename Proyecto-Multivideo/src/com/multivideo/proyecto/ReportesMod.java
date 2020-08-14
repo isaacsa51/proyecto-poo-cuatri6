@@ -6,6 +6,7 @@
 package com.multivideo.proyecto;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,19 +26,27 @@ public class ReportesMod {
        vista = vist;
     }
     
-    public void mostrar(String condicion){
+    public void mostrar(String condicion, java.util.Date utilfecha){
+        java.sql.Date fecha = new java.sql.Date(utilfecha.getTime());
         Connection connection;
         PreparedStatement ps = null;
         
         try{
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/multivideo?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
             
-            if(condicion == "dia")
-            ps = connection.prepareStatement("SELECT * FROM compras WHERE CURDATE() = fecha");
-            else if(condicion == "mes")
-            ps = connection.prepareStatement("SELECT * FROM compras WHERE YEAR(CURDATE()) = YEAR(fecha) AND MONTH(CURDATE()) = MONTH(fecha)");
-            else if(condicion == "año")
-            ps = connection.prepareStatement("SELECT * FROM compras WHERE YEAR(CURDATE()) = YEAR(fecha)");
+            if(condicion == "dia"){
+                ps = connection.prepareStatement("SELECT * FROM compras WHERE fecha = ?");
+                ps.setDate(1, fecha);
+            }
+            else if(condicion == "mes"){
+                ps = connection.prepareStatement("SELECT * FROM compras WHERE YEAR(?) = YEAR(fecha) AND MONTH(?) = MONTH(fecha)");
+                ps.setDate(1, fecha);
+                ps.setDate(2, fecha);
+            }
+            else if(condicion == "año"){
+                ps = connection.prepareStatement("SELECT * FROM compras WHERE YEAR(?) = YEAR(fecha)");
+                ps.setDate(1, fecha);
+            }
             //ps = connection.prepareStatement("SELECT * FROM compras");
             
             //ps.setString(1, condicion);
@@ -77,7 +86,6 @@ public class ReportesMod {
                 modelotabla.addRow(o);*/
                 
                 //Si es un producto...
-                System.out.println(result.getInt("idcompra"));
                 if(result.getInt("cantidad_producto") != 0){
                     rtipo = "Compra/Producto";
                     

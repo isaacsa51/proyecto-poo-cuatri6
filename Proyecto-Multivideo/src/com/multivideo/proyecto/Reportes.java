@@ -1,5 +1,12 @@
 package com.multivideo.proyecto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 public class Reportes extends javax.swing.JFrame {
 
     ReportesMod modelo = new ReportesMod(this);
@@ -127,17 +134,44 @@ public class Reportes extends javax.swing.JFrame {
 
     private void btn_mesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mesActionPerformed
         // TODO add your handling code here:
-        modelo.mostrar("mes");
+        int mes = Integer.parseInt(JOptionPane.showInputDialog(null, "Mes: "));
+        int año = Integer.parseInt(JOptionPane.showInputDialog(null, "Año: "));
+        String fecha = String.valueOf(año) + "-" + String.valueOf(mes) + "-" + "01";
+        Date newfecha = null;
+        try {
+            newfecha = new SimpleDateFormat("yyyy-mm-dd").parse(fecha);
+        } catch (ParseException ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        modelo.mostrar("mes", newfecha);
     }//GEN-LAST:event_btn_mesActionPerformed
 
     private void btn_diaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_diaActionPerformed
         // TODO add your handling code here:
-        modelo.mostrar("dia");
+        int dia = Integer.parseInt(JOptionPane.showInputDialog(null, "Día: "));
+        int mes = Integer.parseInt(JOptionPane.showInputDialog(null, "Mes: "));
+        int año = Integer.parseInt(JOptionPane.showInputDialog(null, "Año: "));
+        String fecha = String.valueOf(año) + "-" + String.valueOf(mes) + "-" + String.valueOf(dia);
+        Date newfecha = null;
+        try {
+            newfecha = new SimpleDateFormat("yyyy-mm-dd").parse(fecha);
+        } catch (ParseException ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        modelo.mostrar("dia", newfecha);
     }//GEN-LAST:event_btn_diaActionPerformed
 
     private void btn_añoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_añoActionPerformed
         // TODO add your handling code here:
-        modelo.mostrar("año");
+        int año = Integer.parseInt(JOptionPane.showInputDialog(null, "Año: "));
+        String fecha = String.valueOf(año) + "-" + "01" + "-" + "01";
+        Date newfecha = null;
+        try {
+            newfecha = new SimpleDateFormat("yyyy-mm-dd").parse(fecha);
+        } catch (ParseException ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        modelo.mostrar("año", newfecha);
     }//GEN-LAST:event_btn_añoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
