@@ -1,295 +1,275 @@
--- phpMyAdmin SQL Dump
--- version 4.9.1
--- https://www.phpmyadmin.net/
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 11-08-2020 a las 06:26:42
--- Versión del servidor: 10.4.8-MariaDB
--- Versión de PHP: 7.3.11
+/*
+SQLyog Ultimate v13.1.1 (64 bit)
+MySQL - 10.4.13-MariaDB : Database - multivideo
+*********************************************************************
+*/
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
-SET time_zone = "+00:00";
+/*!40101 SET NAMES utf8 */;
 
+/*!40101 SET SQL_MODE=''*/;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`multivideo` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
---
--- Base de datos: `multivideo`
---
+USE `multivideo`;
 
--- --------------------------------------------------------
+/*Table structure for table `clientes` */
 
---
--- Estructura de tabla para la tabla `clientes`
---
+DROP TABLE IF EXISTS `clientes`;
 
 CREATE TABLE `clientes` (
   `ine` varchar(50) NOT NULL,
   `nombre` varchar(50) NOT NULL,
-  `telefono` varchar(25) NOT NULL
+  `telefono` varchar(25) NOT NULL,
+  PRIMARY KEY (`ine`),
+  KEY `telefono` (`telefono`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `clientes`
---
+/*Data for the table `clientes` */
 
-INSERT INTO `clientes` (`ine`, `nombre`, `telefono`) VALUES
-('132', 'papa', '669'),
-('312', 'pupu', '729'),
-('432', 'popo', '523');
+insert  into `clientes`(`ine`,`nombre`,`telefono`) values 
+('ine01','david','6543219875'),
+('ine02','juan','1234567895'),
+('ine03','pedro','1231231235');
 
--- --------------------------------------------------------
+/*Table structure for table `compras` */
 
---
--- Estructura de tabla para la tabla `compras`
---
+DROP TABLE IF EXISTS `compras`;
 
 CREATE TABLE `compras` (
-  `idcompra` int(11) NOT NULL,
+  `idcompra` int(11) NOT NULL AUTO_INCREMENT,
   `idrenta` int(11) DEFAULT NULL,
   `idproducto` int(11) DEFAULT NULL,
   `idpelicula` int(11) DEFAULT NULL,
-  `ine` varchar(50) NOT NULL,
-  `cantidad_renta` int(11) NOT NULL,
-  `cantidad_producto` int(11) NOT NULL,
-  `cantidad_pelicula` int(11) NOT NULL,
+  `cantidad_renta` int(11) DEFAULT NULL,
+  `cantidad_producto` int(11) DEFAULT NULL,
+  `cantidad_pelicula` int(11) DEFAULT NULL,
   `fecha` date NOT NULL,
-  `total` float NOT NULL
+  `total` float NOT NULL,
+  PRIMARY KEY (`idcompra`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `compras`
---
+/*Data for the table `compras` */
 
-INSERT INTO `compras` (`idcompra`, `idrenta`, `idproducto`, `idpelicula`, `ine`, `cantidad_renta`, `cantidad_producto`, `cantidad_pelicula`, `fecha`, `total`) VALUES
-(1, 1, NULL, 2, '432', 1, 0, 0, '2020-08-10', 35),
-(2, NULL, 2, NULL, '132', 0, 2, 0, '2020-08-10', 30),
-(3, NULL, NULL, 1, '312', 0, 0, 1, '2020-08-10', 5);
+/*Table structure for table `inventario` */
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `inventario`
---
+DROP TABLE IF EXISTS `inventario`;
 
 CREATE TABLE `inventario` (
-  `idinventario` int(11) NOT NULL,
-  `idpelicula` int(11) NOT NULL,
-  `idproducto` int(11) NOT NULL,
-  `cantidad_pelicula` int(11) NOT NULL,
-  `cantidad_producto` int(11) NOT NULL
+  `idinventario` int(11) NOT NULL AUTO_INCREMENT,
+  `idpelicula` int(11) DEFAULT NULL,
+  `idproducto` int(11) DEFAULT NULL,
+  `cantidad_pelicula` int(11) DEFAULT NULL,
+  `cantidad_producto` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idinventario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
+/*Data for the table `inventario` */
 
---
--- Estructura de tabla para la tabla `peliculas`
---
+/*Table structure for table `peliculas` */
+
+DROP TABLE IF EXISTS `peliculas`;
 
 CREATE TABLE `peliculas` (
-  `idpelicula` int(11) NOT NULL,
+  `idpelicula` varchar(50) NOT NULL,
   `nombre` varchar(50) NOT NULL,
   `genero` varchar(25) NOT NULL,
   `precio` float NOT NULL,
-  `stock` int(11) NOT NULL
+  `cantidad` int(11) NOT NULL,
+  PRIMARY KEY (`idpelicula`),
+  UNIQUE KEY `nombre` (`nombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `peliculas`
---
+/*Data for the table `peliculas` */
 
-INSERT INTO `peliculas` (`idpelicula`, `nombre`, `genero`, `precio`, `stock`) VALUES
-(1, 'test', 'test', 5, 5),
-(2, 'DOOM', 'accion', 35, 10),
-(3, 'Fragmentado', 'thriller', 50, 2);
+insert  into `peliculas`(`idpelicula`,`nombre`,`genero`,`precio`,`cantidad`) values 
+('1','nemo','infantilxd',50,10),
+('2','kingsman','accion',60,15),
+('3','nose','nose',10,50);
 
--- --------------------------------------------------------
+/*Table structure for table `productos` */
 
---
--- Estructura de tabla para la tabla `productos`
---
+DROP TABLE IF EXISTS `productos`;
 
 CREATE TABLE `productos` (
-  `idproducto` int(11) NOT NULL,
+  `idproducto` varchar(50) NOT NULL,
   `nombre` varchar(50) NOT NULL,
   `precio` float NOT NULL,
-  `cantidad` int(11) NOT NULL
+  `cantidad` int(11) NOT NULL,
+  PRIMARY KEY (`idproducto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `productos`
---
+/*Data for the table `productos` */
 
-INSERT INTO `productos` (`idproducto`, `nombre`, `precio`, `cantidad`) VALUES
-(1, 'galletas', 10, 10),
-(2, 'sabritas', 15, 20);
+insert  into `productos`(`idproducto`,`nombre`,`precio`,`cantidad`) values 
+('1','camisa',40,99),
+('2','historieta',25,99);
 
--- --------------------------------------------------------
+/*Table structure for table `rentas` */
 
---
--- Estructura de tabla para la tabla `rentas`
---
+DROP TABLE IF EXISTS `rentas`;
 
 CREATE TABLE `rentas` (
-  `idrenta` int(11) NOT NULL,
+  `idrenta` int(11) NOT NULL AUTO_INCREMENT,
   `ine` varchar(50) NOT NULL,
-  `idpelicula` int(11) NOT NULL,
-  `fechainicio` date NOT NULL,
-  `fechafin` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `telefono` varchar(25) NOT NULL,
+  `nombre_peli` varchar(50) NOT NULL,
+  `fechainicio` varchar(11) NOT NULL,
+  `fechafin` varchar(11) NOT NULL,
+  PRIMARY KEY (`idrenta`),
+  KEY `ine` (`ine`),
+  KEY `nombre_peli` (`nombre_peli`),
+  KEY `telefono` (`telefono`),
+  CONSTRAINT `ine` FOREIGN KEY (`ine`) REFERENCES `clientes` (`ine`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `rentas_ibfk_1` FOREIGN KEY (`nombre_peli`) REFERENCES `peliculas` (`nombre`),
+  CONSTRAINT `rentas_ibfk_2` FOREIGN KEY (`telefono`) REFERENCES `clientes` (`telefono`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `rentas`
---
+/*Data for the table `rentas` */
 
-INSERT INTO `rentas` (`idrenta`, `ine`, `idpelicula`, `fechainicio`, `fechafin`) VALUES
-(1, '432', 2, '2020-08-10', '2020-08-10');
+insert  into `rentas`(`idrenta`,`ine`,`telefono`,`nombre_peli`,`fechainicio`,`fechafin`) values 
+(1,'ine01','6543219875','kingsman','2020-08-10','2020-08-15');
 
--- --------------------------------------------------------
+/* Procedure structure for procedure `Insertar_Clientes` */
 
---
--- Estructura de tabla para la tabla `usuarios`
---
+/*!50003 DROP PROCEDURE IF EXISTS  `Insertar_Clientes` */;
 
-CREATE TABLE `usuarios` (
-  `idusuario` int(11) NOT NULL,
-  `usuario` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+DELIMITER $$
 
---
--- Volcado de datos para la tabla `usuarios`
---
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `Insertar_Clientes`(
+	IN ineIN varchar(50),
+	IN nombreIN VARCHAR(50),
+	IN telefonoIN VARCHAR(25)
+    )
+BEGIN
 
-INSERT INTO `usuarios` (`idusuario`, `usuario`, `password`) VALUES
-(1, 'root', 'root');
+		IF NOT EXISTS (SELECT ine FROM clientes WHERE ine=ineIN) THEN
+			INSERT INTO `multivideo`.`clientes` (ine, nombre, telefono)
+			VALUES (ineIN, nombreIN, telefonoIN);
+		ELSE
+			SELECT "USUARIO YA REGISTRADO" AS ERROR;
+		END IF;
+		
+	END */$$
+DELIMITER ;
 
---
--- Índices para tablas volcadas
---
+/* Procedure structure for procedure `Insertar_Inventario` */
 
---
--- Indices de la tabla `clientes`
---
-ALTER TABLE `clientes`
-  ADD PRIMARY KEY (`ine`);
+/*!50003 DROP PROCEDURE IF EXISTS  `Insertar_Inventario` */;
 
---
--- Indices de la tabla `compras`
---
-ALTER TABLE `compras`
-  ADD PRIMARY KEY (`idcompra`),
-  ADD KEY `idrenta` (`idrenta`),
-  ADD KEY `idproducto` (`idproducto`),
-  ADD KEY `idpelicula` (`idpelicula`),
-  ADD KEY `ine` (`ine`);
+DELIMITER $$
 
---
--- Indices de la tabla `inventario`
---
-ALTER TABLE `inventario`
-  ADD PRIMARY KEY (`idinventario`),
-  ADD KEY `idpelicula` (`idpelicula`),
-  ADD KEY `idproducto` (`idproducto`);
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `Insertar_Inventario`(
+	in idpeliculaIN int,
+	in idproductoIN int,
+	in cantidad_peliculaIN int,
+	in cantidad_productoIN int
+    )
+BEGIN
+		
+		if not exists (select idpelicula from inventario where idpelicula=idpeliculaIN) then
+		
+			insert into `multivideo`.`inventario` (idpelicula, idproducto, cantidad_pelicula, cantidad_producto)
+			values (idpeliculaIN, idproductoIN, cantidad_peliculaIN, cantidad_productoIN);
+			
+		elseif NOT EXISTS (SELECT idproducto FROM inventario WHERE idproducto=idproductoIN) THEN
+		
+			INSERT INTO `multivideo`.`inventario` (idpelicula, idproducto, cantidad_pelicula, cantidad_producto)
+			VALUES (idpeliculaIN, idproductoIN, cantidad_peliculaIN, cantidad_productoIN);
+			
+		else
+		
+			select "PRODUCTO YA REGISTRADO" as ERROR;
+			
+		end if;	
+	END */$$
+DELIMITER ;
 
---
--- Indices de la tabla `peliculas`
---
-ALTER TABLE `peliculas`
-  ADD PRIMARY KEY (`idpelicula`);
+/* Procedure structure for procedure `Insertar_Peliculas` */
 
---
--- Indices de la tabla `productos`
---
-ALTER TABLE `productos`
-  ADD PRIMARY KEY (`idproducto`);
+/*!50003 DROP PROCEDURE IF EXISTS  `Insertar_Peliculas` */;
 
---
--- Indices de la tabla `rentas`
---
-ALTER TABLE `rentas`
-  ADD PRIMARY KEY (`idrenta`),
-  ADD KEY `ine` (`ine`),
-  ADD KEY `idpelicula` (`idpelicula`);
+DELIMITER $$
 
---
--- Indices de la tabla `usuarios`
---
-ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`idusuario`);
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `Insertar_Peliculas`(
+	in idpeliculaIN varchar(50),
+	IN nombreIN VARCHAR(50),
+	in generoIN varchar(25), 
+	IN precioIN FLOAT,
+	IN cantidadIN INT
+    )
+BEGIN
 
---
--- AUTO_INCREMENT de las tablas volcadas
---
+		IF NOT EXISTS (SELECT nombre FROM peliculas WHERE nombre=nombreIN) THEN
+			INSERT INTO `multivideo`.`peliculas` (idpelicula,nombre,genero, precio, cantidad)
+			VALUES (idpeliculaIN,nombreIN,generoIN, precioIN, cantidadIN);
+		ELSE
+			SELECT "PELICULA YA REGISTRADO" AS ERROR;
+		END IF;
 
---
--- AUTO_INCREMENT de la tabla `compras`
---
-ALTER TABLE `compras`
-  MODIFY `idcompra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+	END */$$
+DELIMITER ;
 
---
--- AUTO_INCREMENT de la tabla `inventario`
---
-ALTER TABLE `inventario`
-  MODIFY `idinventario` int(11) NOT NULL AUTO_INCREMENT;
+/* Procedure structure for procedure `Insertar_Productos` */
 
---
--- AUTO_INCREMENT de la tabla `peliculas`
---
-ALTER TABLE `peliculas`
-  MODIFY `idpelicula` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+/*!50003 DROP PROCEDURE IF EXISTS  `Insertar_Productos` */;
 
---
--- AUTO_INCREMENT de la tabla `productos`
---
-ALTER TABLE `productos`
-  MODIFY `idproducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+DELIMITER $$
 
---
--- AUTO_INCREMENT de la tabla `rentas`
---
-ALTER TABLE `rentas`
-  MODIFY `idrenta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `Insertar_Productos`(
+	in idproductoIN varchar(50),
+	in nombreIN varchar(50), 
+	in precioIN float,
+	in cantidadIN int
+    )
+BEGIN
 
---
--- AUTO_INCREMENT de la tabla `usuarios`
---
-ALTER TABLE `usuarios`
-  MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+		IF NOT EXISTS (SELECT nombre FROM productos WHERE nombre=nombreIN) THEN
+			INSERT INTO `multivideo`.`productos` (idproducto, nombre, precio, cantidad)
+			VALUES (idproductoIN, nombreIN, precioIN, cantidadIN);
+		ELSE
+			SELECT "PRODUCTO YA REGISTRADO" AS ERROR;
+		END IF;
 
---
--- Restricciones para tablas volcadas
---
+	END */$$
+DELIMITER ;
 
---
--- Filtros para la tabla `compras`
---
-ALTER TABLE `compras`
-  ADD CONSTRAINT `compras_ibfk_1` FOREIGN KEY (`idpelicula`) REFERENCES `peliculas` (`idpelicula`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `idproducto` FOREIGN KEY (`idproducto`) REFERENCES `productos` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `idrenta` FOREIGN KEY (`idrenta`) REFERENCES `rentas` (`idrenta`) ON DELETE CASCADE ON UPDATE CASCADE;
+/* Procedure structure for procedure `Insertar_Renta` */
 
---
--- Filtros para la tabla `inventario`
---
-ALTER TABLE `inventario`
-  ADD CONSTRAINT `inventario_ibfk_1` FOREIGN KEY (`idpelicula`) REFERENCES `peliculas` (`idpelicula`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `inventario_ibfk_2` FOREIGN KEY (`idproducto`) REFERENCES `productos` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE;
+/*!50003 DROP PROCEDURE IF EXISTS  `Insertar_Renta` */;
 
---
--- Filtros para la tabla `rentas`
---
-ALTER TABLE `rentas`
-  ADD CONSTRAINT `idpelicula` FOREIGN KEY (`idpelicula`) REFERENCES `peliculas` (`idpelicula`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ine` FOREIGN KEY (`ine`) REFERENCES `clientes` (`ine`) ON DELETE CASCADE ON UPDATE CASCADE;
-COMMIT;
+DELIMITER $$
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `Insertar_Renta`(
+	IN ineIN VARCHAR(50),
+	in telefonoIN varchar(25),
+	IN nombre_peliIN varchar(50),
+	IN fechainicioIN varchar(11),
+	IN fechafinIN varchar(11)
+    )
+BEGIN
+
+	declare cantidadStockPeli int default 0;
+	
+	select cantidad into cantidadStockPeli from peliculas
+		where nombre = nombre_peliIN;
+	
+	if cantidadStockPeli > 0 then
+
+		INSERT INTO `multivideo`.`rentas` (ine, telefono,nombre_peli,fechainicio,fechafin)
+		VALUES (ineIN, telefonoIN,nombre_peliIN,fechainicioIN,fechafinIN);	
+		
+	else
+		select "NO HAY EN STOCK" as ERROR;
+	end if;
+	
+	END */$$
+DELIMITER ;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
