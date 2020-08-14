@@ -28,23 +28,20 @@ public class ReportesMod {
     
     public void mostrar(String condicion, java.util.Date utilfecha){
         java.sql.Date fecha = new java.sql.Date(utilfecha.getTime());
-        Connection connection;
         PreparedStatement ps = null;
         
         try{
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/multivideo?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
-            
             if(condicion == "dia"){
-                ps = connection.prepareStatement("SELECT * FROM compras WHERE fecha = ?");
+                ps = conn.prepareStatement("SELECT * FROM compras WHERE fecha = ?");
                 ps.setDate(1, fecha);
             }
             else if(condicion == "mes"){
-                ps = connection.prepareStatement("SELECT * FROM compras WHERE YEAR(?) = YEAR(fecha) AND MONTH(?) = MONTH(fecha)");
+                ps = conn.prepareStatement("SELECT * FROM compras WHERE YEAR(?) = YEAR(fecha) AND MONTH(?) = MONTH(fecha)");
                 ps.setDate(1, fecha);
                 ps.setDate(2, fecha);
             }
             else if(condicion == "año"){
-                ps = connection.prepareStatement("SELECT * FROM compras WHERE YEAR(?) = YEAR(fecha)");
+                ps = conn.prepareStatement("SELECT * FROM compras WHERE YEAR(?) = YEAR(fecha)");
                 ps.setDate(1, fecha);
             }
             //ps = connection.prepareStatement("SELECT * FROM compras");
@@ -89,7 +86,7 @@ public class ReportesMod {
                 if(result.getInt("cantidad_producto") != 0){
                     rtipo = "Compra/Producto";
                     
-                    ps = connection.prepareStatement("Select nombre FROM productos WHERE idproducto=?");
+                    ps = conn.prepareStatement("Select nombre FROM productos WHERE idproducto=?");
                     //ps.setString(1, Integer.toString(result.getInt("idproducto")));
                     ps.setInt(1, result.getInt("idproducto"));
                     temp = ps.executeQuery();
@@ -103,7 +100,7 @@ public class ReportesMod {
                     rtipo = "Renta/Pelicula";
                     
                     //Look for movie name
-                    ps = connection.prepareStatement("Select nombre FROM peliculas WHERE idpelicula=?");
+                    ps = conn.prepareStatement("Select nombre FROM peliculas WHERE idpelicula=?");
                     ps.setString(1, Integer.toString(result.getInt("idpelicula")));
                     temp = ps.executeQuery();
                     temp.next();
@@ -115,7 +112,7 @@ public class ReportesMod {
                     rtipo = "Compra/Pelicula";
                     
                     //Look for movie name
-                    ps = connection.prepareStatement("Select nombre FROM peliculas WHERE idpelicula=?");
+                    ps = conn.prepareStatement("Select nombre FROM peliculas WHERE idpelicula=?");
                     ps.setString(1, Integer.toString(result.getInt("idpelicula")));
                     temp = ps.executeQuery();
                     temp.next();
@@ -125,7 +122,7 @@ public class ReportesMod {
                 }
                 
                 //Obtener nombre de cliente
-                ps = connection.prepareStatement("Select nombre FROM clientes WHERE ine=?");
+                ps = conn.prepareStatement("Select nombre FROM clientes WHERE ine=?");
                 ps.setString(1, result.getString("ine"));
                 temp = ps.executeQuery();
                 temp.next();

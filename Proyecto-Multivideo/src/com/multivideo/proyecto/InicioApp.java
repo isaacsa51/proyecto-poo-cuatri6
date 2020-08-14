@@ -13,9 +13,6 @@ public class InicioApp extends javax.swing.JFrame {
 	//Conexión con BD mediado con un Singleton
 	Connection conn = ConexionBD.getInstance().getConnection();
 
-	String[] productoSeleccionado;
-	int[] cantidades;
-
 	JFrame ventanaMain;
 
 	public void mostrarProductos() {
@@ -40,30 +37,36 @@ public class InicioApp extends javax.swing.JFrame {
     }
 
     public void mostrarPeliculas() {
-        try {
-            String queryPeliculas = "SELECT * FROM peliculas";
+        try{
+			String queryPelicula = "SELECT * FROM peliculas";
 
-            PreparedStatement execQuery = conn.prepareStatement(queryPeliculas);
-            ResultSet resQuery = execQuery.executeQuery();
+			PreparedStatement execQuery = conn.prepareStatement(queryPelicula);
+			ResultSet resQuery = execQuery.executeQuery();
 
-            DefaultTableModel tablaPeliculas = (DefaultTableModel) tblPeliculas.getModel();
-            tablaPeliculas.setRowCount(0);
+			DefaultTableModel tablaPeliculas = (DefaultTableModel) tblPeliculas.getModel();
+			tablaPeliculas.setRowCount(0);
 
-            while (resQuery.next()) {
-                Object peliculas[] = { resQuery.getString("idpelicula"), resQuery.getString("nombre"),resQuery.getString("genero"), resQuery.getFloat("precio"), resQuery.getInt("cantidad")};
+			while (resQuery.next()){
+				Object pelicula[] = {
+						resQuery.getString("idpelicula"),
+						resQuery.getString("nombre"),
+                                                resQuery.getString("genero"),
+						resQuery.getString("precio"),
+						resQuery.getInt("cantidad")
+				};
 
-                // Poner información sacada en cada columna de la tabla
-                tablaPeliculas.addRow(peliculas);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e);
-        }
+				//Agregar información a tabla
+				tablaPeliculas.addRow(pelicula);
+			}
+		}catch (Exception e){
+			JOptionPane.showMessageDialog(null, e);
+		}
     }
 
 	public InicioApp() {
+		initComponents();
                 mostrarPeliculas();
 		mostrarProductos();
-		initComponents();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -103,14 +106,14 @@ public class InicioApp extends javax.swing.JFrame {
 
         tblProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null}
             },
             new String [] {
                 "ID Producto", "Nombre", "Precio", "Cantidad"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
@@ -124,18 +127,20 @@ public class InicioApp extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblProductos.setColumnSelectionAllowed(true);
         jScrollPane2.setViewportView(tblProductos);
+        tblProductos.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         tblPeliculas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null, null}
             },
             new String [] {
                 "ID Pelicula", "Nombre", "Genero", "Precio", "Cantidad"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
@@ -149,7 +154,9 @@ public class InicioApp extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblPeliculas.setColumnSelectionAllowed(true);
         jScrollPane3.setViewportView(tblPeliculas);
+        tblPeliculas.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 2, 24)); // NOI18N
         jLabel3.setText("Peliculas");
@@ -232,13 +239,12 @@ public class InicioApp extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(186, 186, 186)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(183, 183, 183)))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(34, 34, 34)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -247,7 +253,7 @@ public class InicioApp extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(158, 158, 158)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

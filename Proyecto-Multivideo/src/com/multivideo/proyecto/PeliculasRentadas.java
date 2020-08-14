@@ -99,6 +99,7 @@ public class PeliculasRentadas extends javax.swing.JFrame {
         tblRentados = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         brtRegresar.setText("Regresar a menú principal");
         brtRegresar.addActionListener(new java.awt.event.ActionListener() {

@@ -36,6 +36,7 @@ public class Reportes extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("Reportes");
 
         tbl_reportes.setModel(new javax.swing.table.DefaultTableModel(
@@ -88,10 +89,10 @@ public class Reportes extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_dia, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn_mes, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn_año, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_dia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_mes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_año, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(17, 17, 17))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -114,13 +115,13 @@ public class Reportes extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btn_año))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(14, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addGap(75, 75, 75))
+                .addContainerGap())
         );
 
         pack();
@@ -134,7 +135,7 @@ public class Reportes extends javax.swing.JFrame {
 
     private void btn_mesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mesActionPerformed
         // TODO add your handling code here:
-        int mes = Integer.parseInt(JOptionPane.showInputDialog(null, "Mes: "));
+        int mes = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el número del mes que quiere ver: "));
         int año = Integer.parseInt(JOptionPane.showInputDialog(null, "Año: "));
         String fecha = String.valueOf(año) + "-" + String.valueOf(mes) + "-" + "01";
         Date newfecha = null;
@@ -149,7 +150,7 @@ public class Reportes extends javax.swing.JFrame {
     private void btn_diaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_diaActionPerformed
         // TODO add your handling code here:
         int dia = Integer.parseInt(JOptionPane.showInputDialog(null, "Día: "));
-        int mes = Integer.parseInt(JOptionPane.showInputDialog(null, "Mes: "));
+        int mes = Integer.parseInt(JOptionPane.showInputDialog(null, "Número del mes: "));
         int año = Integer.parseInt(JOptionPane.showInputDialog(null, "Año: "));
         String fecha = String.valueOf(año) + "-" + String.valueOf(mes) + "-" + String.valueOf(dia);
         Date newfecha = null;
