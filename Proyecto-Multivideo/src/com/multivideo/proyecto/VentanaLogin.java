@@ -41,6 +41,11 @@ public class VentanaLogin extends javax.swing.JFrame {
                 txfdUsuarioActionPerformed(evt);
             }
         });
+        txfdUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txfdUsuarioKeyPressed(evt);
+            }
+        });
 
         lblPassword.setText("Contrasena");
 
@@ -56,6 +61,12 @@ public class VentanaLogin extends javax.swing.JFrame {
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExitActionPerformed(evt);
+            }
+        });
+
+        pfldContrasena.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                pfldContrasenaKeyPressed(evt);
             }
         });
 
@@ -113,20 +124,26 @@ public class VentanaLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txfdUsuarioActionPerformed
 
+    private void pfldContrasenaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pfldContrasenaKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER)
+        {
+            login();
+        }
+    }//GEN-LAST:event_pfldContrasenaKeyPressed
+
+    private void txfdUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txfdUsuarioKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER)
+        {
+            login();
+        }
+    }//GEN-LAST:event_txfdUsuarioKeyPressed
+
     //Iniciar sesión al dar click al botón
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {
         //Instanciar objeto Usuario
-        Usuario usuarioAcciones = new Usuario();
-
-        //Obtener los valores de los TextField
-        String user = txfdUsuario.getText();
-        String pass = String.valueOf(pfldContrasena.getPassword());
-
-        //Mandar a llamar el método login para poder hacer los queries necesarios
-        if(usuarioAcciones.loginUsuario(user, pass) == 1){
-            //Cerrar ventana actual
-			this.setVisible(false);
-        }
+        login();
     }
     
     //Al dar click salir de la aplicación
@@ -139,6 +156,20 @@ public class VentanaLogin extends javax.swing.JFrame {
             e.printStackTrace();
         }
         System.exit(0);
+    }
+    
+    private void login(){
+        Usuario usuarioAcciones = new Usuario();
+
+        //Obtener los valores de los TextField
+        String user = txfdUsuario.getText();
+        String pass = String.valueOf(pfldContrasena.getPassword());
+
+        //Mandar a llamar el método login para poder hacer los queries necesarios
+        if(usuarioAcciones.loginUsuario(user, pass) == 1){
+            //Cerrar ventana actual
+			this.setVisible(false);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

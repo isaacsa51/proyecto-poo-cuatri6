@@ -98,6 +98,7 @@
     <Component class="javax.swing.JTextField" name="txfdUsuario">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txfdUsuarioActionPerformed"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txfdUsuarioKeyPressed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblPassword">
@@ -123,6 +124,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JPasswordField" name="pfldContrasena">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="pfldContrasenaKeyPressed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
