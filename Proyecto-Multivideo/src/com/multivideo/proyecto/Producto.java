@@ -49,37 +49,4 @@ public class Producto{
 
 		return 0;
 	}
-	
-	protected void mostrarCompra(String producto, int cantidad, InicioApp ventanaApp){
-		try{
-			String queryCompra = "SELECT nombre, cantidad, precio FROM productos WHERE nombre = ?";
-
-			PreparedStatement execQuery = conn.prepareStatement(queryCompra);
-			
-			execQuery.setString(1, producto);
-			ResultSet resultQuery = execQuery.executeQuery();
-
-			DefaultTableModel tablaTotal = (DefaultTableModel) ventanaApp.tblTotal.getModel();
-
-			//Hacer que la tabla se de cuenta de la ultima posición
-            tablaTotal.setRowCount(tablaTotal.getRowCount());
-
-			while(resultQuery.next()){
-				//Obtener precio total
-				float precioTotal = resultQuery.getFloat("precio") * cantidad;
-
-				//Campos a rellenar
-				Object resultadoProducto[] = {
-					producto,
-					cantidad,
-					precioTotal
-				};
-
-				//Poner información en la tabla 
-				tablaTotal.addRow(resultadoProducto);
-            }
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-    }
 }

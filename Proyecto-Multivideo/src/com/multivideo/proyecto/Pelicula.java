@@ -46,37 +46,4 @@ public class Pelicula {
 
         return 0;
     }
-
-    protected void mostrarCompra(String pelicula, int cantidad, InicioApp ventanaApp){
-        try {
-            String queryCompra = "SELECT nombre, cantidad, precio FROM peliculas WHERE nombre = ?";
-
-			PreparedStatement execQuery = conn.prepareStatement(queryCompra);
-			
-			execQuery.setString(1, pelicula);
-			ResultSet resultQuery = execQuery.executeQuery();
-
-			DefaultTableModel tablaTotal = (DefaultTableModel) ventanaApp.tblTotal.getModel();
-
-			//Hacer que la tabla se de cuenta de la ultima posición
-            tablaTotal.setRowCount(tablaTotal.getRowCount());
-
-			while(resultQuery.next()){
-				//Obtener precio total
-				float precioTotal = resultQuery.getFloat("precio") * cantidad;
-
-				//Campos a rellenar
-				Object resultadoPelicula[] = {
-					pelicula,
-					cantidad,
-					precioTotal
-				};
-
-				//Poner información en la tabla 
-				tablaTotal.addRow(resultadoPelicula);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }
