@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.transform.Result;
 
 /**
  *
@@ -26,127 +27,103 @@ public class ReportesMod {
        vista = vist;
     }
     
-    public void mostrar(String condicion, java.util.Date utilfecha){
-        java.sql.Date fecha = new java.sql.Date(utilfecha.getTime());
-        PreparedStatement ps = null;
-        
+    public void mostrar(String condicion, String utilfecha){
+        String query;
+
+        if(condicion == "dia"){
+            query = "SELECT * FROM compras WHERE fecha = ?";
+            mostrarDia(query, utilfecha);
+        }else if(condicion == "mes"){
+            query = "SELECT * FROM compras WHERE YEAR(?) = YEAR(fecha) AND MONTH(?) = MONTH(fecha)";
+            mostrarMes(query, utilfecha);
+        }else if(condicion == "anio"){
+            query = "SELECT * FROM compras WHERE YEAR(?) = YEAR(fecha)";
+            mostrarAnio(query, utilfecha);
+        }
+    }
+
+    protected void mostrarDia(String query, String fecha){
+        PreparedStatement execQ = null;
+
         try{
-            if(condicion == "dia"){
-                ps = conn.prepareStatement("SELECT * FROM compras WHERE fecha = ?");
-                ps.setDate(1, fecha);
+            execQ = conn.prepareStatement(query);
+            execQ.setString(1, fecha);
+
+            ResultSet resQ = execQ.executeQuery();
+
+            DefaultTableModel modelotabla = (DefaultTableModel) vista.tbl_reportes.getModel();
+            modelotabla.setRowCount(0);
+
+            while (resQ.next()){
+                Object reporte[] = {
+                        resQ.getInt("idcompra"),
+                        resQ.getInt("idrenta"),
+                        resQ.getString("nombre_pelicula"),
+                        resQ.getString("fecha"),
+                        resQ.getFloat("total")
+                };
+
+                modelotabla.addRow(reporte);
             }
-            else if(condicion == "mes"){
-                ps = conn.prepareStatement("SELECT * FROM compras WHERE YEAR(?) = YEAR(fecha) AND MONTH(?) = MONTH(fecha)");
-                ps.setDate(1, fecha);
-                ps.setDate(2, fecha);
-            }
-            else if(condicion == "año"){
-                ps = conn.prepareStatement("SELECT * FROM compras WHERE YEAR(?) = YEAR(fecha)");
-                ps.setDate(1, fecha);
-            }
-            //ps = connection.prepareStatement("SELECT * FROM compras");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    protected void mostrarMes(String query, String fecha){
+        PreparedStatement execQ = null;
+
+        try{
+            execQ = conn.prepareStatement(query);
+            execQ.setString(1, fecha);
+            execQ.setString(2, fecha);
             
-            //ps.setString(1, condicion);
-            ResultSet result = ps.executeQuery();
+            ResultSet resQ = execQ.executeQuery();
             
             DefaultTableModel modelotabla = (DefaultTableModel) vista.tbl_reportes.getModel();
             modelotabla.setRowCount(0);
             
-            String rtipo = "";
-            String rcliente = "";
-            String rnombre = "";
-            int rcantidad = 0;
-            
-            ResultSet temp;
-            
-            while(result.next()){
+            while (resQ.next()){
+                Object reporte[] = {
+                    resQ.getInt("idcompra"),
+                    resQ.getInt("idrenta"),
+                    resQ.getString("nombre_pelicula"),
+                    resQ.getString("fecha"),
+                    resQ.getFloat("total")
+                };
                 
-                /*//Obtener nombre de cliente
-                ps = connection.prepareStatement("Select nombre FROM clientes WHERE INE=?");
-                ps.setString(1, result.getString("INE"));
-                temp = ps.executeQuery();
-                cliente = temp.getString("nombre");
-                
-                //PRODUCTOS
-                ps = connection.prepareStatement("Select nombre FROM productos WHERE idproducto=?");
-                ps.setString(1, result.getString("idproducto"));
-                temp = ps.executeQuery();
-                producto = temp.getString("nombre");
-                
-                Object o[] = {result.getInt("id_ventas"), 
-                    result.getString(cliente), 
-                    result.getString(producto), 
-                    result.getInt("cantidad"),
-                    result.getString("fecha"),
-                    result.getFloat("precio"),};
-                
-                modelotabla.addRow(o);*/
-                
-                //Si es un producto...
-                if(result.getInt("cantidad_producto") != 0){
-                    rtipo = "Compra/Producto";
-                    
-                    ps = conn.prepareStatement("Select nombre FROM productos WHERE idproducto=?");
-                    //ps.setString(1, Integer.toString(result.getInt("idproducto")));
-                    ps.setInt(1, result.getInt("idproducto"));
-                    temp = ps.executeQuery();
-                    temp.next();
-                    rnombre = temp.getString("nombre");
-                    
-                    rcantidad = result.getInt("cantidad_producto");
-                }
-                //Si es renta
-                else if(result.getInt("cantidad_renta") != 0){
-                    rtipo = "Renta/Pelicula";
-                    
-                    //Look for movie name
-                    ps = conn.prepareStatement("Select nombre FROM peliculas WHERE idpelicula=?");
-                    ps.setString(1, Integer.toString(result.getInt("idpelicula")));
-                    temp = ps.executeQuery();
-                    temp.next();
-                    rnombre = temp.getString("nombre");
-                    
-                    rcantidad = result.getInt("cantidad_renta");
-                }
-                else{
-                    rtipo = "Compra/Pelicula";
-                    
-                    //Look for movie name
-                    ps = conn.prepareStatement("Select nombre FROM peliculas WHERE idpelicula=?");
-                    ps.setString(1, Integer.toString(result.getInt("idpelicula")));
-                    temp = ps.executeQuery();
-                    temp.next();
-                    rnombre = temp.getString("nombre");
-                    
-                    rcantidad = result.getInt("cantidad_pelicula");
-                }
-                
-                //Obtener nombre de cliente
-                ps = conn.prepareStatement("Select nombre FROM clientes WHERE ine=?");
-                ps.setString(1, result.getString("ine"));
-                temp = ps.executeQuery();
-                temp.next();
-                rcliente = temp.getString("nombre");
-                
-                
-                Object o[] = {result.getInt("idcompra"), 
-                    rtipo,
-                    rnombre,
-                    rcliente,
-                    rcantidad,
-                    result.getString("fecha"),
-                    result.getFloat("total")};
-                modelotabla.addRow(o);
+                modelotabla.addRow(reporte);
             }
-            vista.tbl_reportes.setModel(modelotabla);
-        }
-        catch(SQLException e){
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
-    
-    
-    public void regresar(){
-        
+
+    protected void mostrarAnio(String query, String fecha){
+        PreparedStatement execQ = null;
+
+        try{
+            execQ = conn.prepareStatement(query);
+            execQ.setString(1, fecha);
+            
+            ResultSet resQ = execQ.executeQuery();
+            
+            DefaultTableModel modelotabla = (DefaultTableModel) vista.tbl_reportes.getModel();
+            modelotabla.setRowCount(0);
+
+            while (resQ.next()){
+                Object reporte[] = {
+                        resQ.getInt("idcompra"),
+                        resQ.getInt("idrenta"),
+                        resQ.getString("nombre_pelicula"),
+                        resQ.getString("fecha"),
+                        resQ.getFloat("total")
+                };
+
+                modelotabla.addRow(reporte);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
