@@ -22,11 +22,11 @@ public class ReportesMod {
     //Conexión con BD mediado con un Singleton
     Connection conn = ConexionBD.getInstance().getConnection();
     Reportes vista;
-    
+
     public ReportesMod(Reportes vist){
-       vista = vist;
+        vista = vist;
     }
-    
+
     public void mostrar(String condicion, String utilfecha){
         String query;
 
@@ -77,21 +77,21 @@ public class ReportesMod {
             execQ = conn.prepareStatement(query);
             execQ.setString(1, fecha);
             execQ.setString(2, fecha);
-            
+
             ResultSet resQ = execQ.executeQuery();
-            
+
             DefaultTableModel modelotabla = (DefaultTableModel) vista.tbl_reportes.getModel();
             modelotabla.setRowCount(0);
-            
+
             while (resQ.next()){
                 Object reporte[] = {
-                    resQ.getInt("idcompra"),
-                    resQ.getInt("idrenta"),
-                    resQ.getString("nombre_pelicula"),
-                    resQ.getString("fecha"),
-                    resQ.getFloat("total")
+                        resQ.getInt("idcompra"),
+                        resQ.getInt("idrenta"),
+                        resQ.getString("nombre_pelicula"),
+                        resQ.getString("fecha"),
+                        resQ.getFloat("total")
                 };
-                
+
                 modelotabla.addRow(reporte);
             }
         }catch (Exception e){
@@ -105,9 +105,9 @@ public class ReportesMod {
         try{
             execQ = conn.prepareStatement(query);
             execQ.setString(1, fecha);
-            
+
             ResultSet resQ = execQ.executeQuery();
-            
+
             DefaultTableModel modelotabla = (DefaultTableModel) vista.tbl_reportes.getModel();
             modelotabla.setRowCount(0);
 

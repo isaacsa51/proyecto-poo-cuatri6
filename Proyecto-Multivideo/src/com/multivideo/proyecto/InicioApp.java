@@ -26,7 +26,12 @@ public class InicioApp extends javax.swing.JFrame {
             tablaProductos.setRowCount(0);
 
             while (resQuery.next()) {
-                Object productos[] = { resQuery.getString("idproducto"), resQuery.getString("nombre"),resQuery.getString("cantidad"), resQuery.getFloat("precio")};
+                Object productos[] = {
+                        resQuery.getString("idproducto"),
+                        resQuery.getString("nombre"),
+                        resQuery.getFloat("precio"),
+                        resQuery.getString("cantidad")
+                };
 
                 // Poner información sacada en cada columna de la tabla
                 tablaProductos.addRow(productos);
@@ -50,9 +55,9 @@ public class InicioApp extends javax.swing.JFrame {
 				Object pelicula[] = {
 						resQuery.getString("idpelicula"),
 						resQuery.getString("nombre"),
-                                                resQuery.getString("genero"),
-						resQuery.getString("precio"),
-						resQuery.getInt("cantidad")
+                        resQuery.getString("genero"),
+						resQuery.getInt("cantidad"),
+						resQuery.getString("precio")
 				};
 
 				//Agregar información a tabla
@@ -113,7 +118,7 @@ public class InicioApp extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
@@ -140,7 +145,7 @@ public class InicioApp extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false

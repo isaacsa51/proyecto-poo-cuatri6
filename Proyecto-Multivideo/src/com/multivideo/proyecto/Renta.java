@@ -13,7 +13,7 @@ public class Renta {
 
 	//Métodos
 	protected void crearRenta(String nombre, String telefono, String ine, String pelicula, String inicio, String entrega){
-            
+
 		try{
 			String regCliente = "{CALL Insertar_Clientes(?, ?, ?)}";
 

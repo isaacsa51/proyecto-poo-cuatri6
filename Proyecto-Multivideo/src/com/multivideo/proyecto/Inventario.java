@@ -804,7 +804,7 @@ public class Inventario extends JDialog{
 			}else{
 				//Agregar producto
 				try {
-					String aggProducto_proc = "{CALL Insertar_Peliculas(?, ?, ?, ?)}";
+					String aggProducto_proc = "{CALL Insertar_Peliculas(?, ?, ?, ?, ?)}";
 
 					CallableStatement cs = null;
 
@@ -882,7 +882,7 @@ public class Inventario extends JDialog{
 			}
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Error al querer eliminar la pelicula seleccionada. \n" + e, "Error al eliminar", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "La pelicula no se pued eliminar debido a que al menos uno se encuentra en renta. \n" + e, "Error al eliminar", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }
